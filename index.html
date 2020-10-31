@@ -20,28 +20,32 @@
     <button id="newGame">Start Game</button>
     <p class="easyOptions"><span><strong>Options: </strong></span><span class="blue">Blue</span>, <span class="brown">Brown</span>, <span class="yellow">Yellow</span>, <span class="orange">Orange</span>, <span class="green">Green</span> and <span class="pink">Pink</span></p><br>
 </main>
-<textarea rows="9" cols="100" class="notes">Not In Sequence:
+<textarea rows="8" cols="100" class="notes">
+Not In Sequence:
 
 Possible Colors:
 
-In Sequence: </textarea>
+In Sequence:
+</textarea>
 <div class="gameBoard">
-    <div class="inputs">
-        <label for="colorInput1">First Color </label>
-        <input class="colorGuess" id="colorInput1" type="text" placeholder="here" onfocus="this.value=''"><br>
+    <div class="buttonField">
+
+        <button class="selectors easy" id="blue"></button>
+        <button class="selectors easy" id="brown"></button>
+        <button class="selectors easy" id="yellow"></button>
+        <button class="selectors easy" id="orange"></button>
+        <button class="selectors easy" id="green"></button>
+        <button class="selectors easy" id="pink"></button>
+        <button class="selectors hard" id="grey"></button>
+        <button class="selectors hard" id="cyan"></button>
+        <button class="selectors hard" id="olive"></button>
+        <button class="selectors hard" id="tan"></button>
+        <button class="selectors hard" id="purple"></button>
+        <button class="selectors hard" id="lime"></button>
+        <p class="yourGuessSet"><span class="selectedColor" id="pick1"></span><span class="selectedColor" id="pick2"></span><span class="selectedColor" id="pick3"></span><span class="selectedColor" id="pick4"></span></p>
+
     </div>
-    <div class="inputs">
-        <label for="colorInput2">Second Color </label>
-        <input class="colorGuess"  id="colorInput2" type="text" placeholder="here" onfocus="this.value=''"><br>
-    </div>
-    <div class="inputs">
-        <label for="colorInput3">Third Color </label>
-        <input class="colorGuess"  id="colorInput3" type="text" placeholder="here" onfocus="this.value=''"><br>
-    </div>
-    <div class="inputs">
-        <label for="colorInput4">Fourth Color </label>
-        <input class="colorGuess"  id="colorInput4" type="text" placeholder="here" onfocus="this.value=''"><br>
-    </div>
+
     <button type="submit" id="submit">Assert</button><br>
     <p id="winner"></p><br>
 </div>

@@ -1,5 +1,8 @@
 body {
+    background-image: url("img/binary.jpg");
     background-color: #101111;
+    background-size: cover;
+    background-position: center;
     color: #d3d5d6;
     text-align: center;
     font-family: "Helvetica Neue", sans-serif;
@@ -8,7 +11,7 @@ body {
     align-items: center;
 }
 .shadow{
-    text-shadow: 1px 1px black;
+    text-shadow: 2px 2px black;
 }
 .guesses{
     display: flex;
@@ -29,13 +32,13 @@ p{
 }
 #newGame{
     border-radius: 25%;
-    margin-top: 0em;
+    margin-top: 0;
     margin-bottom: .5em;
 }
 #top{
     font-family:"Press Start 2P", "Helvetica Neue", sans-serif;
     font-size: 3em;
-    color: #14BDEB;
+    color: #0e82a1;
     margin: .25em auto;
 }
 .responses{
@@ -51,7 +54,7 @@ a{
     color: red;
 }
 h3{
-    color: #14BDEB;
+    color: #0e82a1;
     font-family:"Press Start 2P", "Helvetica Neue", sans-serif;
 }
 button{
@@ -79,17 +82,14 @@ input:focus::placeholder{
     color: transparent;
 }
 .notes{
-    /*background: transparent;*/
+    opacity: 0.5;
+    resize: none;
     background-color: #202020;
     border: #080708;
+    border-radius: 14px;
     color: #FFFAFB;
     padding: 2em;
     max-width: 90vw;
-}
-.colorGuess{
-    border:#080708;
-    background-color: #171717;
-    color: #FFFAFB;
 }
 .inputs{
     padding: 0.3em;
@@ -110,14 +110,14 @@ input:focus::placeholder{
 .red{
     color: #ff2e00;
 }
+.white{
+    color: #fffaff;
+}
 .lime{
     color: #78fc6a;
 }
 .tan{
     color: #c7aa74;
-}
-.white{
-    color: #fffaff;
 }
 .yellow{
     color: #f3de2c;
@@ -151,4 +151,92 @@ input:focus::placeholder{
 }
 #done, #submit{
     margin-top: 1em;
+}
+
+.selectors{
+    margin: 1em 0;
+    width: 35px;
+    height: 35px;
+    border: 5px outset #353a3a;
+    border-radius: 20px;
+    box-shadow: 1px 1px #242527;
+}
+.yourGuessSet{
+    width: 175px;
+    height: 45px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#pick1{
+    width: 25%;
+    height: 100%;
+    border: 2px solid #101111;
+    border-left: none;
+    border-radius: 5px;
+    background-color: #232525;
+}
+#pick2{
+    width: 25%;
+    height: 100%;
+    border: 2px solid #101111;
+    border-left: none;
+    border-radius: 5px;
+    background-color: #232525;
+}
+#pick3{
+    width: 25%;
+    height: 100%;
+    border: 2px solid #101111;
+    border-left: none;
+    border-radius: 5px;
+    background-color: #232525;
+}
+#pick4{
+    width: 25%;
+    height: 100%;
+    border: 1px solid #101111;
+    border-left: none;
+    border-radius: 5px;
+    background-color: #232525;
+}
+.hard{
+    display: none;
+}
+#blue{
+    background-color: #3772ff;
+}
+#lime{
+    background-color: #78fc6a;
+}
+#tan{
+    background-color: #c7aa74;
+}
+#yellow{
+    background-color: #f3de2c;
+}
+#pink{
+    background-color: #e9738f;
+}
+#cyan{
+    background-color: #05c8cc;
+}
+#green{
+    background-color: #034c3c;
+}
+#brown{
+    background-color: #582b11;
+}
+#grey{
+    background-color: #808080;
+}
+#olive{
+    background-color: #808000;
+}
+#orange{
+    background-color: #fe7f2d;
+}
+#purple{
+    background-color: #7b1e7a;
 }
