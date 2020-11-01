@@ -259,16 +259,18 @@
     let pickCount = 0;
     let clearGuesses = document.getElementById("delete");
     clearGuesses.addEventListener("click", function (){
-       guessSet.pop();
-        pickCount--;
-        spots[pickCount].style.backgroundColor = "#232525"
+        if(guessSet.length > 0) {
+            guessSet.pop();
+            pickCount--;
+            spots[pickCount].style.backgroundColor = "#232525"
+        }
     });
     for(let i = 0; i < buttonColors.length; i++){
         buttonColors[i].disabled = true;
     }
     // for(let i = 0; i < buttonColors.length; i++){
     //     buttonColors[i].addEventListener("click", function (){
-    //         spots[pickCount].style.backgroundColor = 'blue';
+    //         spots[pickCount].style.backgroundColor = buttonColors[i].style.backgroundColor;
     //         pickCount++;
     //     });
     // }
