@@ -2,7 +2,7 @@ body {
     background-image: url("img/binary.jpg");
     background-color: #101111;
     background-size: cover;
-    background-position: center;
+    background-repeat: no-repeat;
     color: #d3d5d6;
     text-align: center;
     font-family: "Helvetica Neue", sans-serif;
@@ -10,16 +10,27 @@ body {
     flex-direction: column;
     align-items: center;
 }
+.howToPlay{
+    opacity: .7;
+}
+.descriptionOfGame{
+    display: none;
+    color: #797b84;
+    max-width: 90vw;
+}
+#removeHelp{
+    color: #14BDEB;
+    width: 20%;
+    max-width: 85px;
+    font-size: 1em;
+}
 .shadow{
     text-shadow: 2px 2px black;
 }
 .guesses{
     display: flex;
     justify-content: center;
-    color: #797B84;
-}
-.thin{
-    margin: 1px 0;
+    color: #797b84;
 }
 .easyOptions{
     margin-bottom: 0;
@@ -28,7 +39,7 @@ p{
     margin: .5em 0;
 }
 .colorDescription{
-    margin-bottom: 5px;
+    margin: 10px 0;
 }
 #newGame{
     border-radius: 25%;
@@ -152,16 +163,15 @@ input:focus::placeholder{
 #done, #submit{
     margin-top: 1em;
 }
-.colorButtons{
-
-}
 .options{
-    width: 33%;
+    width: 100%;
     margin-top: 1em;
 }
 .buttonField{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .buttonSection{
     display: flex;
@@ -191,7 +201,7 @@ input:focus::placeholder{
     border: 2px solid #101111;
     border-left: none;
     border-radius: 5px;
-    background-color: #232525;
+    background-color: #0d151d;
 }
 #pick2{
     width: 25%;
@@ -199,7 +209,7 @@ input:focus::placeholder{
     border: 2px solid #101111;
     border-left: none;
     border-radius: 5px;
-    background-color: #232525;
+    background-color: #0d151d;
 }
 #pick3{
     width: 25%;
@@ -207,7 +217,7 @@ input:focus::placeholder{
     border: 2px solid #101111;
     border-left: none;
     border-radius: 5px;
-    background-color: #232525;
+    background-color: #0d151d;
 }
 #pick4{
     width: 25%;
@@ -215,10 +225,13 @@ input:focus::placeholder{
     border: 1px solid #101111;
     border-left: none;
     border-radius: 5px;
-    background-color: #232525;
+    background-color: #0d151d;
 }
 .hard{
     display: none;
+}
+.heading{
+    display: flex;
 }
 #blue{
     background-color: #3772ff;
