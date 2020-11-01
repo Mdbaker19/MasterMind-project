@@ -59,6 +59,7 @@
     let answer4 = document.getElementById("key4");
     //assert buttons
     let assert = document.getElementById("submit");
+    assert.disabled = true;
     // class selects
     let yourGuesses = document.getElementsByClassName("yourColor");
     let redResponses = document.getElementsByClassName("outputRed");
@@ -142,12 +143,10 @@
         }
     }
     restart.addEventListener("click", function(){
+        assert.disabled = true;
         count = 0;
         reloadGame(restartCount);
         restartCount++;
-        for(let i = 0; i < buttonColors.length; i++){
-            buttonColors[i].disabled = false;
-        }
         for(let i = 0; i < spots.length; i++) {
             spots[i].style.backgroundColor = '#232525';
         }
@@ -155,6 +154,7 @@
     });
 
     newGame.addEventListener("click", function () {
+        assert.disabled = false;
         newGame.style.color = "#14bdeb";
         newGame.style.background = "black";
         if (hard) {
@@ -168,8 +168,12 @@
                 sequence.push(colorKey[key1]);
             }
         }
+        for(let i = 0; i < buttonColors.length; i++){
+            buttonColors[i].disabled = false;
+        }
         begin.innerText = "Sequence Generated";
         newGame.disabled = true;
+        hardMode.disabled = true;
         done.addEventListener("click", function () {
             answer1.innerHTML = sequence[0];
             answer2.innerHTML = sequence[1];
@@ -253,6 +257,15 @@
     let buttonColors = document.getElementsByClassName("selectors");
     let spots = document.getElementsByClassName("selectedColor");
     let pickCount = 0;
+    let clearGuesses = document.getElementById("delete");
+    clearGuesses.addEventListener("click", function (){
+       guessSet.pop();
+        pickCount--;
+        spots[pickCount].style.backgroundColor = "#232525"
+    });
+    for(let i = 0; i < buttonColors.length; i++){
+        buttonColors[i].disabled = true;
+    }
     // for(let i = 0; i < buttonColors.length; i++){
     //     buttonColors[i].addEventListener("click", function (){
     //         spots[pickCount].style.backgroundColor = 'blue';
