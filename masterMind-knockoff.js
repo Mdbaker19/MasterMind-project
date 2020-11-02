@@ -96,12 +96,9 @@
     //game timer and game start
     let timer = document.getElementById("timer");
     let time;
-    function runTime(){
+    function runTime() {
         time++;
         timer.innerText = time + " seconds";
-    }
-    function stopTime(){
-        time--;
     }
     newGame.addEventListener("click", function () {
         time = 0;
@@ -131,8 +128,7 @@
             answer2.innerHTML = sequence[1];
             answer3.innerHTML = sequence[2];
             answer4.innerHTML = sequence[3];
-            timer.style.display = "block";
-            setInterval(stopTime, 1000);
+            // timer.style.display = "block";
             for(let i = 0; i < buttonColors.length; i++){
                 buttonColors[i].disabled = true;
             }
@@ -443,7 +439,7 @@
         fourthC[count].style.color = guessSet[3];
         if(won){
             gameWon.style.display = "block";
-            timer.style.display = "block";
+            // timer.style.display = "block";
         }
     }
 })();
