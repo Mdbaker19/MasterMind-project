@@ -117,6 +117,7 @@ input:focus::placeholder{
 }
 #link{
     background-color: #111212;
+    margin-bottom: 1em;
 }
 .red{
     color: #ff2e00;
@@ -268,4 +269,10 @@ input:focus::placeholder{
 }
 #purple{
     background-color: #7b1e7a;
+}
+#timer{
+    display: none;
+}
+#winner{
+    display: none;
 }
