@@ -1,27 +1,13 @@
 (function () {
     "use strict";
     const colorKey = [
-        "blue",
-        "yellow",
-        "orange",
-        "green",
-        "pink",
-        "brown"
+        "blue", "yellow", "orange", "green", "pink", "brown"
     ];
     const hardColorKey = [
-        "blue",
-        "yellow",
-        "orange",
-        "green",
-        "pink",
-        "brown",
-        "olive",
-        "purple",
-        "grey",
-        "lime",
-        "cyan",
-        "tan"
+        "blue", "yellow", "orange", "green", "pink", "brown",
+        "olive", "purple", "grey", "lime", "cyan", "tan"
     ];
+    //game help & description
     let help = document.getElementById("help");
     let helpEnabled = false;
     let description = document.getElementById("gameHelp");
@@ -36,7 +22,7 @@
             })
         }
     });
-
+    //game logic
     let sequence = [];
     let hardMode = document.getElementById("increaseDiff");
     let hard = false;
@@ -63,7 +49,7 @@
     let answer2 = document.getElementById("key2");
     let answer3 = document.getElementById("key3");
     let answer4 = document.getElementById("key4");
-    //assert buttons
+    //assert button
     let assert = document.getElementById("submit");
     assert.disabled = true;
     // class selects
@@ -107,7 +93,66 @@
     let newText = document.getElementById("textCycle1");
     let gameText = document.getElementById("textCycle2");
     let restartCount = 0;
-
+    //game timer and game start
+    let timer = document.getElementById("timer");
+    let time;
+    function runTime(){
+        time++;
+        timer.innerText = time + " seconds";
+    }
+    function stopTime(){
+        time--;
+    }
+    newGame.addEventListener("click", function () {
+        time = 0;
+        setInterval(runTime, 1000);
+        assert.disabled = false;
+        newGame.style.color = "#14bdeb";
+        newGame.style.background = "#0d151d";
+        if (hard) {
+            for(let i = 0; i < 4; i++){
+                let hardKey1 = Math.floor(Math.random() * hardColorKey.length - 1) + 1;
+                sequence.push(hardColorKey[hardKey1]);
+            }
+        } else {
+            for(let i = 0; i < 4; i++){
+                let key1 = Math.floor(Math.random() * colorKey.length - 1) + 1;
+                sequence.push(colorKey[key1]);
+            }
+        }
+        for(let i = 0; i < buttonColors.length; i++){
+            buttonColors[i].disabled = false;
+        }
+        begin.innerText = "Sequence Generated";
+        newGame.disabled = true;
+        hardMode.disabled = true;
+        done.addEventListener("click", function () {
+            answer1.innerHTML = sequence[0];
+            answer2.innerHTML = sequence[1];
+            answer3.innerHTML = sequence[2];
+            answer4.innerHTML = sequence[3];
+            timer.style.display = "block";
+            setInterval(stopTime, 1000);
+            for(let i = 0; i < buttonColors.length; i++){
+                buttonColors[i].disabled = true;
+            }
+            for(let i = 0; i < spots.length; i++) {
+                spots[i].style.backgroundColor = '#000000';
+            }
+            pickCount = 5;
+        });
+    });
+    restart.addEventListener("click", function(){
+        timer.style.display = "none";
+        assert.disabled = true;
+        count = 0;
+        reloadGame(restartCount);
+        restartCount++;
+        for(let i = 0; i < spots.length; i++) {
+            spots[i].style.backgroundColor = '#0d151d';
+        }
+        pickCount = 0;
+    });
     const reloadGame = function(restartCount){
         if(restartCount % 2 === 0){
             newText.style.color = "#ff2e00";
@@ -148,53 +193,6 @@
             yourGuesses[i].style.color = "#797b84";
         }
     }
-    restart.addEventListener("click", function(){
-        assert.disabled = true;
-        count = 0;
-        reloadGame(restartCount);
-        restartCount++;
-        for(let i = 0; i < spots.length; i++) {
-            spots[i].style.backgroundColor = '#0d151d';
-        }
-        pickCount = 0;
-    });
-
-    newGame.addEventListener("click", function () {
-        assert.disabled = false;
-        newGame.style.color = "#14bdeb";
-        newGame.style.background = "#0d151d";
-        if (hard) {
-            for(let i = 0; i < 4; i++){
-                let hardKey1 = Math.floor(Math.random() * hardColorKey.length - 1) + 1;
-                sequence.push(hardColorKey[hardKey1]);
-            }
-        } else {
-            for(let i = 0; i < 4; i++){
-                let key1 = Math.floor(Math.random() * colorKey.length - 1) + 1;
-                sequence.push(colorKey[key1]);
-            }
-        }
-        for(let i = 0; i < buttonColors.length; i++){
-            buttonColors[i].disabled = false;
-        }
-        begin.innerText = "Sequence Generated";
-        newGame.disabled = true;
-        hardMode.disabled = true;
-        done.addEventListener("click", function () {
-            answer1.innerHTML = sequence[0];
-            answer2.innerHTML = sequence[1];
-            answer3.innerHTML = sequence[2];
-            answer4.innerHTML = sequence[3];
-            for(let i = 0; i < buttonColors.length; i++){
-                buttonColors[i].disabled = true;
-            }
-            for(let i = 0; i < spots.length; i++) {
-                spots[i].style.backgroundColor = '#000000';
-            }
-            pickCount = 5;
-        });
-    });
-
     let buttonColors = document.getElementsByClassName("selectors");
     let spots = document.getElementsByClassName("selectedColor");
     let pickCount = 0;
@@ -314,7 +312,7 @@
     });
 
     assert.addEventListener("click", function(){
-        onClick(count);
+        assertGuess(count);
         count++;
         guessSet = [];
         pickCount = 0;
@@ -348,6 +346,7 @@
     }
 
     function whites(first, second, third, fourth, colorArr) {
+        let rCRS = 0;
         let rCWS = 0;
         let firstIsRed = false;
         let secondIsRed = false;
@@ -388,7 +387,7 @@
         return rCWS + " White";
     }
 
-    function onClick(){
+    function assertGuess(){
         let newKey = sequence;
         let first = guessSet[0];
         let second = guessSet[1];
@@ -443,7 +442,8 @@
         fourthC[count].innerHTML = fourth;
         fourthC[count].style.color = guessSet[3];
         if(won){
-            gameWon.innerText = "Winner!";
+            gameWon.style.display = "block";
+            timer.style.display = "block";
         }
     }
 })();
