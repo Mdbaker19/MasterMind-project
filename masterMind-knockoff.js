@@ -40,8 +40,8 @@
     });
 
     let won = false;
-    let newGame = document.getElementById("newGame");
-    let done = document.getElementById("done");
+    let startGame = document.getElementById("newGame");
+    let showSolution = document.getElementById("done");
     let gameWon = document.getElementById("winner");
     let count = 0;
     //answer key
@@ -89,23 +89,23 @@
     let response9W = document.getElementById("nineWhite");
     let response10 = document.getElementById("ten");
     let response10W = document.getElementById("tenWhite");
-    let restart = document.getElementById("link");
+    let newGame = document.getElementById("anotherRound");
     let newText = document.getElementById("textCycle1");
     let gameText = document.getElementById("textCycle2");
     let restartCount = 0;
     //game timer and game start
     let timer = document.getElementById("timer");
-    let time;
+    let time = 0;
+    let intervalID;
     function runTime() {
         time++;
-        timer.innerText = time + " seconds";
     }
-    newGame.addEventListener("click", function () {
+    startGame.addEventListener("click", function () {
         time = 0;
-        setInterval(runTime, 1000);
+        intervalID = setInterval(runTime, 1000);
         assert.disabled = false;
-        newGame.style.color = "#14bdeb";
-        newGame.style.background = "#0d151d";
+        startGame.style.color = "#14bdeb";
+        startGame.style.background = "#0d151d";
         if (hard) {
             for(let i = 0; i < 4; i++){
                 let hardKey1 = Math.floor(Math.random() * hardColorKey.length - 1) + 1;
@@ -121,35 +121,42 @@
             buttonColors[i].disabled = false;
         }
         begin.innerText = "Sequence Generated";
-        newGame.disabled = true;
+        startGame.disabled = true;
         hardMode.disabled = true;
-        done.addEventListener("click", function () {
+        showSolution.addEventListener("click", function () {
             answer1.innerHTML = sequence[0];
             answer2.innerHTML = sequence[1];
             answer3.innerHTML = sequence[2];
             answer4.innerHTML = sequence[3];
-            // timer.style.display = "block";
+            clearInterval(intervalID);
+            timer.style.display = "block";
             for(let i = 0; i < buttonColors.length; i++){
                 buttonColors[i].disabled = true;
             }
             for(let i = 0; i < spots.length; i++) {
                 spots[i].style.backgroundColor = '#000000';
             }
-            pickCount = 5;
+            pickCount = 500;
         });
     });
-    restart.addEventListener("click", function(){
-        timer.style.display = "none";
-        assert.disabled = true;
+    newGame.addEventListener("click", function(){
+        sequence = [];
         count = 0;
-        reloadGame(restartCount);
+        pickCount = 0;
+        assert.disabled = true;
+        hardMode.disabled = false;
+        startGame.disabled = false;
+        won = false;
+        hard = false;
         restartCount++;
+        cycleNewGameColor(restartCount);
+        textReset();
+        colorReset();
         for(let i = 0; i < spots.length; i++) {
             spots[i].style.backgroundColor = '#0d151d';
         }
-        pickCount = 0;
     });
-    const reloadGame = function(restartCount){
+    const cycleNewGameColor = function(restartCount){
         if(restartCount % 2 === 0){
             newText.style.color = "#ff2e00";
             gameText.style.color = "#fffaff";
@@ -157,27 +164,22 @@
             newText.style.color = "#fffaff";
             gameText.style.color = "#ff2e00";
         }
-        textRestart();
-        for(let i = 0; i < hardButtons.length; i++){
-            hardButtons[i].style.display = "none";
-        }
     }
-    const textRestart = function(){
-        hard = false;
-        sequence = [];
-        hardMode.disabled = false;
-        newGame.disabled = false;
-        gameWon.innerText = "";
+    const colorReset = function (){
+        hardMode.style.color = "#fffafb";
+        hardMode.style.background = "#4d473d";
+        startGame.style.color = "#fffafb";
+        startGame.style.background = "#4d473d";
+    }
+    const textReset = function(){
         isHard.innerText = "";
         answer1.innerHTML = "--";
         answer2.innerHTML = "--";
         answer3.innerHTML = "--";
         answer4.innerHTML = "--";
         begin.innerText = "";
-        hardMode.style.color = "#fffafb";
-        hardMode.style.background = "#4d473d";
-        newGame.style.color = "#fffafb";
-        newGame.style.background = "#4d473d";
+        timer.style.display = "none";
+        gameWon.style.display = "none";
         for(let i = 0; i < redResponses.length; i++){
             redResponses[i].innerText = "";
         }
@@ -187,6 +189,9 @@
         for(let i = 0; i < yourGuesses.length; i++){
             yourGuesses[i].innerText = "..";
             yourGuesses[i].style.color = "#797b84";
+        }
+        for(let i = 0; i < hardButtons.length; i++){
+            hardButtons[i].style.display = "none";
         }
     }
     let buttonColors = document.getElementsByClassName("selectors");
@@ -203,12 +208,6 @@
     for(let i = 0; i < buttonColors.length; i++){
         buttonColors[i].disabled = true;
     }
-    // for(let i = 0; i < buttonColors.length; i++){
-    //     buttonColors[i].addEventListener("click", function (){
-    //         spots[pickCount].style.backgroundColor = buttonColors[i].style.backgroundColor;
-    //         pickCount++;
-    //     });
-    // }
     let guessSet = [];
     let blue = document.getElementById("blue");
     let brown = document.getElementById("brown");
@@ -223,7 +222,7 @@
     let purple = document.getElementById("purple");
     let lime = document.getElementById("lime");
     blue.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'blue';
+        spots[pickCount].style.backgroundColor = "#3772ff";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("blue");
@@ -237,70 +236,70 @@
         }
     });
     yellow.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'yellow';
+        spots[pickCount].style.backgroundColor = "#f3de2c";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("yellow");
         }
     });
     orange.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'orange';
+        spots[pickCount].style.backgroundColor = "#fe7f2d";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("orange");
         }
     });
     green.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'green';
+        spots[pickCount].style.backgroundColor = "#034c3c";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("green");
         }
     });
     pink.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'pink';
+        spots[pickCount].style.backgroundColor = "#e9738f";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("pink");
         }
     });
     grey.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'grey';
+        spots[pickCount].style.backgroundColor = "#808080";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("grey");
         }
     });
     cyan.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'cyan';
+        spots[pickCount].style.backgroundColor = "#05c8cc";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("cyan");
         }
     });
     olive.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'olive';
+        spots[pickCount].style.backgroundColor = "#808000";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("olive");
         }
     });
     tan.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'tan';
+        spots[pickCount].style.backgroundColor = "#c7aa74";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("tan");
         }
     });
     purple.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'purple';
+        spots[pickCount].style.backgroundColor = "#7b1e7a";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("purple");
         }
     });
     lime.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = 'lime';
+        spots[pickCount].style.backgroundColor = "#78fc6a";
         pickCount++;
         if(guessSet.length < 4){
             guessSet.push("lime");
@@ -342,7 +341,6 @@
     }
 
     function whites(first, second, third, fourth, colorArr) {
-        let rCRS = 0;
         let rCWS = 0;
         let firstIsRed = false;
         let secondIsRed = false;
@@ -438,8 +436,10 @@
         fourthC[count].innerHTML = fourth;
         fourthC[count].style.color = guessSet[3];
         if(won){
+            clearInterval(intervalID);
             gameWon.style.display = "block";
-            // timer.style.display = "block";
+            timer.style.display = "block";
+            timer.innerText = "Solved in " + time + " seconds";
         }
     }
 })();
