@@ -4,8 +4,7 @@
         "blue", "yellow", "orange", "green", "pink", "brown"
     ];
     const hardColorKey = [
-        "blue", "yellow", "orange", "green", "pink", "brown",
-        "olive", "purple", "grey", "lime", "cyan", "tan"
+        ...colorKey, "olive", "purple", "grey", "lime", "cyan", "tan"
     ];
     //game help & description
     let help = document.getElementById("help");
@@ -19,7 +18,7 @@
             removeHelp.addEventListener("click", function (){
                 description.style.display = "none";
                 helpEnabled = false;
-            })
+            });
         }
     });
     //game logic
@@ -209,102 +208,13 @@
         buttonColors[i].disabled = true;
     }
     let guessSet = [];
-    let blue = document.getElementById("blue");
-    let brown = document.getElementById("brown");
-    let yellow = document.getElementById("yellow");
-    let orange = document.getElementById("orange");
-    let green = document.getElementById("green");
-    let pink = document.getElementById("pink");
-    let grey = document.getElementById("grey");
-    let cyan = document.getElementById("cyan");
-    let olive = document.getElementById("olive");
-    let tan = document.getElementById("tan");
-    let purple = document.getElementById("purple");
-    let lime = document.getElementById("lime");
-    blue.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#3772ff";
+    document.querySelectorAll(".selectors").forEach((btn) => btn.addEventListener("click", function() {
+        spots[pickCount].style.backgroundColor = this.id.toString();
         pickCount++;
         if(guessSet.length < 4){
-            guessSet.push("blue");
+            guessSet.push(this.id.toString());
         }
-    });
-    brown.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = '#552a14';
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("brown");
-        }
-    });
-    yellow.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#f3de2c";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("yellow");
-        }
-    });
-    orange.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#fe7f2d";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("orange");
-        }
-    });
-    green.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#034c3c";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("green");
-        }
-    });
-    pink.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#e9738f";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("pink");
-        }
-    });
-    grey.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#808080";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("grey");
-        }
-    });
-    cyan.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#05c8cc";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("cyan");
-        }
-    });
-    olive.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#808000";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("olive");
-        }
-    });
-    tan.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#c7aa74";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("tan");
-        }
-    });
-    purple.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#7b1e7a";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("purple");
-        }
-    });
-    lime.addEventListener("click", function (){
-        spots[pickCount].style.backgroundColor = "#78fc6a";
-        pickCount++;
-        if(guessSet.length < 4){
-            guessSet.push("lime");
-        }
-    });
+    }));
 
     assert.addEventListener("click", function(){
         assertGuess(count);
@@ -320,19 +230,15 @@
         let rCRS = 0;
         if (first === colorArr[0]) {
             rCRS++;
-            colorArr = colorArr.join(" ").replace(first, "").split(" ");
         }
         if (second === colorArr[1]) {
             rCRS++;
-            colorArr = colorArr.join(" ").replace(second, "").split(" ");
         }
         if (third === colorArr[2]) {
             rCRS++;
-            colorArr = colorArr.join(" ").replace(third, "").split(" ");
         }
         if (fourth === colorArr[3]) {
             rCRS++;
-            colorArr = colorArr.join(" ").replace(fourth, "").split(" ");
         }
         if(rCRS === 4){
             won = true;
@@ -439,7 +345,7 @@
             clearInterval(intervalID);
             gameWon.style.display = "block";
             timer.style.display = "block";
-            timer.innerText = "Solved in " + time + " seconds";
+            timer.innerHTML = `Solved in ${time} seconds`;
         }
     }
 })();
