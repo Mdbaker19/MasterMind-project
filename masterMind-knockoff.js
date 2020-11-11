@@ -89,9 +89,6 @@
     let response10 = document.getElementById("ten");
     let response10W = document.getElementById("tenWhite");
     let newGame = document.getElementById("anotherRound");
-    let newText = document.getElementById("textCycle1");
-    let gameText = document.getElementById("textCycle2");
-    let restartCount = 0;
     //game timer and game start
     let timer = document.getElementById("timer");
     let time = 0;
@@ -139,60 +136,9 @@
         });
     });
     newGame.addEventListener("click", function(){
-        sequence = [];
-        count = 0;
-        pickCount = 0;
-        assert.disabled = true;
-        hardMode.disabled = false;
-        startGame.disabled = false;
-        won = false;
-        hard = false;
-        restartCount++;
-        cycleNewGameColor(restartCount);
-        textReset();
-        colorReset();
-        for(let i = 0; i < spots.length; i++) {
-            spots[i].style.backgroundColor = '#0d151d';
-        }
+        window.location.reload();
     });
-    const cycleNewGameColor = function(restartCount){
-        if(restartCount % 2 === 0){
-            newText.style.color = "#ff2e00";
-            gameText.style.color = "#fffaff";
-        } else {
-            newText.style.color = "#fffaff";
-            gameText.style.color = "#ff2e00";
-        }
-    }
-    const colorReset = function (){
-        hardMode.style.color = "#fffafb";
-        hardMode.style.background = "#4d473d";
-        startGame.style.color = "#fffafb";
-        startGame.style.background = "#4d473d";
-    }
-    const textReset = function(){
-        isHard.innerText = "";
-        answer1.innerHTML = "--";
-        answer2.innerHTML = "--";
-        answer3.innerHTML = "--";
-        answer4.innerHTML = "--";
-        begin.innerText = "";
-        timer.style.display = "none";
-        gameWon.style.display = "none";
-        for(let i = 0; i < redResponses.length; i++){
-            redResponses[i].innerText = "";
-        }
-        for(let i = 0; i < whiteResponses.length; i++){
-            whiteResponses[i].innerText = "";
-        }
-        for(let i = 0; i < yourGuesses.length; i++){
-            yourGuesses[i].innerText = "..";
-            yourGuesses[i].style.color = "#797b84";
-        }
-        for(let i = 0; i < hardButtons.length; i++){
-            hardButtons[i].style.display = "none";
-        }
-    }
+
     let buttonColors = document.getElementsByClassName("selectors");
     let spots = document.getElementsByClassName("selectedColor");
     let pickCount = 0;
