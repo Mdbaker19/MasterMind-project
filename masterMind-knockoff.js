@@ -274,7 +274,7 @@
             buttonColors[i].disabled = true;
         }
         $("#post").on("click", function (){
-            user = generateUser($("#name").val(), mode, time, count + 1, sequence);
+            user = generateUser($("#name").val(), mode, time, count, sequence);
             console.log(user);
             $("#leaderBoardModal").fadeOut(200);
             addScore(user);
