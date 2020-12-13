@@ -315,9 +315,17 @@ input:focus::placeholder{
     background-color: #1c232a;
     border: 5px solid #1e313e;
     border-radius: 5px;
+    overflow: scroll;
+    overflow-x: hidden;
 }
-#closeLeaderBoard{
+#fullLeaderBoard::-webkit-scrollbar{
+    width: 5px;
+}
+#closeLeaderBoard {
     align-self: flex-end;
+    border: none;
+    background: none;
+    font-size: 1.25rem;
 }
 #gameUser{
     padding: 5px;
