@@ -22,9 +22,11 @@
     let sequence = [];
     let hardMode = document.getElementById("increaseDiff");
     let hard = false;
+    let mode = "Normal";
     let hardButtons = document.getElementsByClassName("hard");
     hardMode.addEventListener("click", function () {
         hard = true;
+        mode = "Hard";
         hardMode.style.color = "#14bdeb";
         hardMode.style.background = "#0d151d";
         $("#isHardMode").text("Enabled");
@@ -251,10 +253,44 @@
         fourthC[count].innerHTML = fourth;
         fourthC[count].style.color = guessSet[3];
         if(won){
-            clearInterval(intervalID);
-            $("#winner").fadeIn(100);
-            timer.style.display = "block";
-            timer.innerHTML = `Solved in ${time} seconds`;
+            gameWon();
         }
     }
+
+    let user;
+    let leaderBoardHTML = document.getElementById("fullLeaderBoard");
+    function gameWon(){
+        clearInterval(intervalID);
+        timer.style.display = "block";
+        timer.innerHTML = `Solved in ${time} seconds`;
+        $("#leaderBoardModal").fadeIn(200);
+        let winningSequenceArr = Array.from($(".winningSequence"));
+        $("#solvedMoves").text(count + 1);
+        for(let i = 0; i < winningSequenceArr.length; i++){
+            winningSequenceArr[i].innerHTML = `<button class="leaderBoardButtonsDisplay" id="${sequence[i]}"></button>`;
+        }
+        $("#gameMode").text(mode);
+        for(let i = 0; i < buttonColors.length; i++){
+            buttonColors[i].disabled = true;
+        }
+        $("#post").on("click", function (){
+            user = generateUser($("#name").val(), mode, time, count + 1);
+            $("#leaderBoardModal").fadeOut(200);
+            addScore(user);
+        });
+    }
+    $("#viewLeaderBoard").on("click", function(){
+        const leaderBoard = $("#fullLeaderBoard");
+        leaderBoard.css("display", "flex");
+        fetch(postURL).then( r => r.json()).then( d => {
+            console.log(d);
+            for(let i = 0; i < d.length; i++){
+                leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+            }
+            $("#closeLeaderBoard").on("click", function () {
+                $("#fullLeaderBoard").fadeOut(300);
+            });
+        })
+    });
+
 })();
