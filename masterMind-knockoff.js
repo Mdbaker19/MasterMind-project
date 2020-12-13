@@ -80,7 +80,6 @@
                 sequence.push(colorKey[key1]);
             }
         }
-        console.log(sequence);
         for(let i = 0; i < buttonColors.length; i++){
             buttonColors[i].disabled = false;
         }
