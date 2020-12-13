@@ -83,7 +83,6 @@
         for(let i = 0; i < buttonColors.length; i++){
             buttonColors[i].disabled = false;
         }
-        console.log(sequence);
         $("#start").text("Sequence Generated");
         startGame.disabled = true;
         hardMode.disabled = true;
@@ -257,6 +256,9 @@
             gameWon();
         }
     }
+
+    let user;
+    let leaderBoardHTML = document.getElementById("fullLeaderBoard");
     function gameWon(){
         clearInterval(intervalID);
         timer.style.display = "block";
@@ -268,22 +270,27 @@
             winningSequenceArr[i].innerHTML = `<button class="leaderBoardButtonsDisplay" id="${sequence[i]}"></button>`;
         }
         $("#gameMode").text(mode);
-        for(let i = 0; i < spots.length; i++) {
-            spots[i].style.backgroundColor = '#000000';
-        }
         for(let i = 0; i < buttonColors.length; i++){
             buttonColors[i].disabled = true;
         }
         $("#post").on("click", function (){
-            console.log(generateUser($("#name").val(), mode, time, count + 1));
+            user = generateUser($("#name").val(), mode, time, count + 1);
             $("#leaderBoardModal").fadeOut(200);
+            addScore(user);
         });
     }
     $("#viewLeaderBoard").on("click", function(){
         const leaderBoard = $("#fullLeaderBoard");
         leaderBoard.css("display", "flex");
-        $("#closeLeaderBoard").on("click", function (){
-           $("#fullLeaderBoard").fadeOut(300);
-        });
+        fetch(postURL).then( r => r.json()).then( d => {
+            console.log(d);
+            for(let i = 0; i < d.length; i++){
+                leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+            }
+            $("#closeLeaderBoard").on("click", function () {
+                $("#fullLeaderBoard").fadeOut(300);
+            });
+        })
     });
+
 })();

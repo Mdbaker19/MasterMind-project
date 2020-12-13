@@ -116,7 +116,6 @@ input:focus::placeholder{
     color: #ff2e00;
 }
 #anotherRound{
-    background-color: #111212;
     margin-bottom: 1em;
 }
 .red{
@@ -302,12 +301,14 @@ input:focus::placeholder{
 .bottomButtons{
     width: 50%;
     margin: 5px auto;
+    background-color: #111212;
 }
 #fullLeaderBoard{
     display: none;
     flex-direction: column;
     align-items: center;
-    width: 75%;
+    width: 33%;
+    min-width: 250px;
     height: 80vh;
     position: fixed;
     top: 10vh;
@@ -317,4 +318,10 @@ input:focus::placeholder{
 }
 #closeLeaderBoard{
     align-self: flex-end;
+}
+#gameUser{
+    padding: 5px;
+    border: 3px solid #1d82a1;
+    margin: 5px;
+    width: 90%;
 }
