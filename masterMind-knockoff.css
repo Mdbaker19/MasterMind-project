@@ -333,3 +333,13 @@ input:focus::placeholder{
     margin: 5px;
     width: 90%;
 }
+#leaderBoardSequence{
+    display: flex;
+    justify-content: space-evenly;
+}
+.userSequence{
+    height: 25px;
+    width: 10%;
+    border: 2px solid #06080f;
+    border-radius: 15px;
+}

@@ -1,12 +1,13 @@
 const postURL = "https://juniper-satisfying-cold.glitch.me/scores";
 
-function generateUser(name, mode, time, moves){
+function generateUser(name, mode, time, moves, arr){
     let ran = ~~(Math.random() * 80000);
     return {
         name: name || `RandomUser#${ran}`,
         mode: mode,
         time: `${time} seconds`,
-        moves: moves
+        moves: moves,
+        sequence: arr
     }
 }
 
@@ -14,6 +15,12 @@ function render(userObj){
     return `<div id="gameUser">
                 <h4>${userObj.name}</h4>
                 <p>Game mode: ${userObj.mode}, solved in ${userObj.time} and ${userObj.moves} moves</p>
+                <div id="leaderBoardSequence">
+                    <p class="userSequence" id="${userObj.sequence[0]}"></p>
+                    <p class="userSequence" id="${userObj.sequence[1]}"></p>
+                    <p class="userSequence" id="${userObj.sequence[2]}"></p>
+                    <p class="userSequence" id="${userObj.sequence[3]}"></p>
+                </div>
             </div>`;
 }
 

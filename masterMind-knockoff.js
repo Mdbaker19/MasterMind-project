@@ -80,6 +80,7 @@
                 sequence.push(colorKey[key1]);
             }
         }
+        console.log(sequence);
         for(let i = 0; i < buttonColors.length; i++){
             buttonColors[i].disabled = false;
         }
@@ -267,14 +268,15 @@
         let winningSequenceArr = Array.from($(".winningSequence"));
         $("#solvedMoves").text(count + 1);
         for(let i = 0; i < winningSequenceArr.length; i++){
-            winningSequenceArr[i].innerHTML = `<button class="leaderBoardButtonsDisplay" id="${sequence[i]}"></button>`;
+            winningSequenceArr[i].innerHTML = `<p class="leaderBoardButtonsDisplay" id="${sequence[i]}"></p>`;
         }
         $("#gameMode").text(mode);
         for(let i = 0; i < buttonColors.length; i++){
             buttonColors[i].disabled = true;
         }
         $("#post").on("click", function (){
-            user = generateUser($("#name").val(), mode, time, count + 1);
+            user = generateUser($("#name").val(), mode, time, count + 1, sequence);
+            console.log(user);
             $("#leaderBoardModal").fadeOut(200);
             addScore(user);
         });
