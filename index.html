@@ -38,6 +38,23 @@ Possible Colors:
 
 In Sequence:
 </textarea>
+<div id="leaderBoardModal">
+    <p>Winner!</p>
+    <p>Game mode: <span id="gameMode"></span></p>
+    <div id="winningSequence">
+        <p class="winningSequence"></p>
+        <p class="winningSequence"></p>
+        <p class="winningSequence"></p>
+        <p class="winningSequence"></p>
+    </div>
+    <p><span id="timer"></span></p>
+    <p><span id="solvedMoves"></span> Moves</p>
+    <label>
+        Name
+        <input id="name" placeholder="userName">
+    </label>
+    <button id="post">Post Score</button>
+</div>
 <div class="gameBoard">
     <div class="buttonField">
 
@@ -64,8 +81,6 @@ In Sequence:
         </div>
     </div>
 
-    <p id="winner">Winner!</p>
-    <p id="timer"></p>
 </div>
 <div class="heading">
     <h3>Response:</h3>
@@ -129,9 +144,15 @@ In Sequence:
 <div class="answerKey">
     <h3>Answer key:</h3>
     <h2><span id="key1">--</span> | <span id="key2">--</span> | <span id="key3">--</span> | <span id="key4">--</span></h2><br>
-    <button id="anotherRound"><a href="#top"><span id="textCycle1">New </span><span id="textCycle2">Game</span></a></button>
+    <button class="bottomButtons" id="anotherRound"><a href="#top"><span id="textCycle1">New </span><span id="textCycle2">Game</span></a></button>
+    <button class="bottomButtons" id="viewLeaderBoard">Leader Board</button>
+</div>
+<div id="fullLeaderBoard">
+    <button id="closeLeaderBoard">X</button>
+
 </div>
 <script src="jQ.js"></script>
+<script src="leaderboard.js"></script>
 <script src="masterMind-knockoff.js"></script>
 </body>
 </html>
