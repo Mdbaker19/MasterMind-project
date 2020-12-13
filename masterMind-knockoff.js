@@ -282,8 +282,10 @@
     $("#viewLeaderBoard").on("click", function(){
         const leaderBoard = $("#fullLeaderBoard");
         leaderBoard.css("display", "flex");
+        leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p>`;
         fetch(postURL).then( r => r.json()).then( d => {
             console.log(d);
+            leaderBoardHTML.innerHTML = `<button id="closeLeaderBoard">X</button>`;
             for(let i = 0; i < d.length; i++){
                 leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
             }
