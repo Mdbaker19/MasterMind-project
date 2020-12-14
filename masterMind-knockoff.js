@@ -285,15 +285,21 @@
         leaderBoard.css("display", "flex");
         leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p>`;
         fetch(postURL).then( r => r.json()).then( d => {
-            console.log(d);
+            d = d.sort((a, b) => (parseFloat(a.time.split(" "))) - (parseFloat(b.time.split(" "))) > 0 ? 1 : -1);
             leaderBoardHTML.innerHTML = `<button id="closeLeaderBoard">X</button>`;
-            for(let i = 0; i < d.length; i++){
-                leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+            if(d.length < 10) {
+                for (let i = 0; i < d.length; i++) {
+                    leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                }
+            } else {
+                for(let i = 0; i < 15; i++){
+                    leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                }
             }
             $("#closeLeaderBoard").on("click", function () {
                 $("#fullLeaderBoard").fadeOut(300);
             });
-        })
+        });
     });
 
 })();
