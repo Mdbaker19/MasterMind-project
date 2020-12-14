@@ -285,15 +285,30 @@
         leaderBoard.css("display", "flex");
         leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p>`;
         fetch(postURL).then( r => r.json()).then( d => {
-            d = d.sort((a, b) => (parseFloat(a.time.split(" "))) - (parseFloat(b.time.split(" "))) > 0 ? 1 : -1);
+            d = d.sort((a, b) => (parseFloat(a.time.split(" ")[0])) - (parseFloat(b.time.split(" ")[0])) > 0 ? 1 : -1);
             leaderBoardHTML.innerHTML = `<button id="closeLeaderBoard">X</button>`;
+            console.log(d);
             if(d.length < 10) {
                 for (let i = 0; i < d.length; i++) {
-                    leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                    if (d[i].mode === "Hard") {
+                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                    }
                 }
-            } else {
+                for(let i = 0; i < d.length; i++){
+                    if(d[i].mode === "Normal"){
+                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                    }
+                }
+            }else {
+                for (let i = 0; i < 15; i++) {
+                    if (d[i].mode === "Hard") {
+                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                    }
+                }
                 for(let i = 0; i < 15; i++){
-                    leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                    if(d[i].mode === "Normal"){
+                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
+                    }
                 }
             }
             $("#closeLeaderBoard").on("click", function () {
