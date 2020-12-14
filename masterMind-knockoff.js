@@ -338,8 +338,7 @@
         fetch(postURL).then( r => r.json()).then( d => {
             d = d.sort((a, b) => (parseFloat(a.time.split(" ")[0])) - (parseFloat(b.time.split(" ")[0])) > 0 ? 1 : -1);
             leaderBoardHTML.innerHTML = `<button id="closeLeaderBoard">X</button>`;
-            console.log(d);
-            if(d.length < 10) {
+            if(d.length < 15) {
                 for (let i = 0; i < d.length; i++) {
                     if (d[i].mode === "Hard") {
                         leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
