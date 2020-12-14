@@ -328,43 +328,33 @@
             user = generateUser($("#name").val(), mode, time, count, sequence);
             console.log(user);
             $("#leaderBoardModal").fadeOut(200);
-            addScore(user);
+            addScore(user).then( () => {
+                fetchLeaderBoardData();
+            });
         });
     }
     $("#viewLeaderBoard").on("click", function(){
         const leaderBoard = $("#fullLeaderBoard");
         leaderBoard.css("display", "flex");
-        leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p>`;
-        fetch(postURL).then( r => r.json()).then( d => {
+        leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p><button id="closeLeaderBoard">X</button>`;
+        fetchLeaderBoardData();
+    });
+    function fetchLeaderBoardData() {
+        fetch(postURL).then(r => r.json()).then(d => {
             d = d.sort((a, b) => (parseFloat(a.time.split(" ")[0])) - (parseFloat(b.time.split(" ")[0])) > 0 ? 1 : -1);
-            leaderBoardHTML.innerHTML = `<button id="closeLeaderBoard">X</button>`;
-            if(d.length < 15) {
-                for (let i = 0; i < d.length; i++) {
-                    if (d[i].mode === "Hard") {
-                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
-                    }
-                }
-                for(let i = 0; i < d.length; i++){
-                    if(d[i].mode === "Normal"){
-                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
-                    }
-                }
-            }else {
-                for (let i = 0; i < 15; i++) {
-                    if (d[i].mode === "Hard") {
-                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
-                    }
-                }
-                for(let i = 0; i < 15; i++){
-                    if(d[i].mode === "Normal"){
-                        leaderBoardHTML.insertAdjacentHTML("beforeend", render(d[i]));
-                    }
+            leaderBoardHTML.innerHTML = `<div id="leaderBoardInfo"><p>15 Best Scores</p><button id="closeLeaderBoard">X</button></div>`;
+
+            const hardList = d.filter(d => d.mode === "Hard");
+            const normalList = d.filter(d => d.mode === "Normal");
+            for (let i = 0; i < 15; i++) {
+                if (d[i] !== undefined) {
+                    leaderBoardHTML.insertAdjacentHTML("beforeend", render([...hardList, ...normalList][i]));
                 }
             }
             $("#closeLeaderBoard").on("click", function () {
                 $("#fullLeaderBoard").fadeOut(300);
             });
         });
-    });
+    }
 
 })();

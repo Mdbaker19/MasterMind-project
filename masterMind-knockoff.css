@@ -322,7 +322,6 @@ input:focus::placeholder{
     width: 5px;
 }
 #closeLeaderBoard {
-    align-self: flex-end;
     border: none;
     background: none;
     font-size: 1.25rem;
@@ -342,4 +341,10 @@ input:focus::placeholder{
     width: 25px;
     border: 2px solid #06080f;
     border-radius: 15px;
+}
+#leaderBoardInfo{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
 }
