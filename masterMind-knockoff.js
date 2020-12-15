@@ -7,14 +7,27 @@
         ...colorKey, "olive", "purple", "grey", "lime", "cyan", "tan"
     ];
 
+    function gameEnd(){
+        clearInterval(intervalID);
+        for(let i = 0; i < buttonColors.length; i++){
+            buttonColors[i].disabled = true;
+        }
+        for(let i = 0; i < spots.length; i++) {
+            spots[i].style.backgroundColor = '#000000';
+        }
+        assert.disabled = true;
+        clear.disabled = true;
+        pickCount = 500;
+    }
+
     const postURL = "https://juniper-satisfying-cold.glitch.me/scores";
     function generateUser(name, mode, time, moves, arr){
         let ran = ~~(Math.random() * 80000);
         return {
             name: name || `RandomUser#${ran}`,
-            mode: mode,
+            mode,
             time: `${time} seconds`,
-            moves: moves,
+            moves,
             sequence: arr
         }
     }
@@ -47,18 +60,53 @@
             .catch( err => console.error(err));
     }
 
-    function remove(id){
-        fetch(`${postURL}/${id}`, {
-            method: "Delete",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(r => r.json()).then( d => console.log(`deleted id ${id}`)).catch(err => console.error(err));
+    function renderSolution(arr){
+        return `<div id="key"><span id="${arr[0]}"></span><span id="${arr[1]}"></span><span id="${arr[2]}"></span><span id="${arr[3]}"></span></div>`
+    }
+    function runTime() {
+        time++;
     }
 
+    function remove(id){fetch(`${postURL}/${id}`, {method: "Delete", headers: {"Content-Type": "application/json"}}).then(r => r.json()).then( d => console.log(`deleted id ${id}`)).catch(err => console.error(err));}
 
-    //game help & description
+    let intervalID;
+    let user;
+    let mode = "Normal";
     let helpEnabled = false;
+    let won = false;
+    let hard = false;
+    let sequence = [];
+    let guessSet = [];
+    let pickCount = 0;
+    let count = 0;
+    let time = 0;
+    let startGame = document.getElementById("newGame");
+    let hardMode = document.getElementById("increaseDiff");
+    let hardButtons = document.getElementsByClassName("hard");
+    let assert = document.getElementById("submit");
+    let clear = document.getElementById("delete");
+    let timer = document.getElementById("timer");
+    let firstC = document.getElementsByClassName("c1");
+    let secondC = document.getElementsByClassName("c2");
+    let thirdC = document.getElementsByClassName("c3");
+    let fourthC = document.getElementsByClassName("c4");
+    let spots = document.getElementsByClassName("selectedColor");
+    let leaderBoardHTML = document.getElementById("fullLeaderBoard");
+    assert.disabled = true;
+
+    let redResponses = document.getElementsByClassName("outputRed");
+    let whiteResponses = document.getElementsByClassName("outputWhite");
+    let buttonColors = document.getElementsByClassName("selectors");
+    for(let i = 0; i < redResponses.length; i++){
+        redResponses[i].style.color = "red";
+    }
+    for(let i = 0; i < whiteResponses.length; i++){
+        whiteResponses[i].style.color = "white";
+    }
+    for(let i = 0; i < buttonColors.length; i++){
+        buttonColors[i].disabled = true;
+    }
+
     $("#help").on("click", function (){
         $("#gameHelp").fadeIn(500);
         helpEnabled = true;
@@ -69,57 +117,33 @@
             });
         }
     });
-    //game logic
-    let sequence = [];
-    let hardMode = document.getElementById("increaseDiff");
-    let hard = false;
-    let mode = "Normal";
-    let hardButtons = document.getElementsByClassName("hard");
+
     hardMode.addEventListener("click", function () {
         hard = true;
         mode = "Hard";
+        hardMode.disabled = true;
         hardMode.style.color = "#14bdeb";
         hardMode.style.background = "#0d151d";
         $("#isHardMode").text("Enabled");
-        hardMode.disabled = true;
         for(let i = 0; i < hardButtons.length; i++){
             hardButtons[i].style.display = "inline-block";
         }
     });
 
-    let won = false;
-    let startGame = document.getElementById("newGame");
-    let count = 0;
-    //assert button
-    let assert = document.getElementById("submit");
-    assert.disabled = true;
-    // class selects
-    let redResponses = document.getElementsByClassName("outputRed");
-    for(let i = 0; i < redResponses.length; i++){
-        redResponses[i].style.color = "red";
-    }
-    let whiteResponses = document.getElementsByClassName("outputWhite");
-    for(let i = 0; i < whiteResponses.length; i++){
-        whiteResponses[i].style.color = "white";
-    }
-    //your inputs
-    let firstC = document.getElementsByClassName("c1");
-    let secondC = document.getElementsByClassName("c2");
-    let thirdC = document.getElementsByClassName("c3");
-    let fourthC = document.getElementsByClassName("c4");
-    //game timer and game start
-    let timer = document.getElementById("timer");
-    let time = 0;
-    let intervalID;
-    function runTime() {
-        time++;
-    }
     startGame.addEventListener("click", function () {
         time = 0;
         intervalID = setInterval(runTime, 1000);
         assert.disabled = false;
+        startGame.disabled = true;
+        hardMode.disabled = true;
         startGame.style.color = "#14bdeb";
         startGame.style.background = "#0d151d";
+        for(let i = 0; i < buttonColors.length; i++){
+            buttonColors[i].disabled = false;
+        }
+        if(!hardMode){
+            $("#increaseDiff").css("color", "#620113")
+        }
         if (hard) {
             for(let i = 0; i < 4; i++){
                 let hardKey1 = Math.floor(Math.random() * hardColorKey.length - 1) + 1;
@@ -131,56 +155,38 @@
                 sequence.push(colorKey[key1]);
             }
         }
-        for(let i = 0; i < buttonColors.length; i++){
-            buttonColors[i].disabled = false;
-        }
         $("#start").text("Sequence Generated");
-        startGame.disabled = true;
-        hardMode.disabled = true;
         $("#done").on("click", function () {
-            $("#key1").text(sequence[0]);
-            $("#key2").text(sequence[1]);
-            $("#key3").text(sequence[2]);
-            $("#key4").text(sequence[3]);
-            clearInterval(intervalID);
-            for(let i = 0; i < buttonColors.length; i++){
-                buttonColors[i].disabled = true;
-            }
-            for(let i = 0; i < spots.length; i++) {
-                spots[i].style.backgroundColor = '#000000';
-            }
-            pickCount = 500;
+            $("#answerLocation").html(renderSolution(sequence));
+            gameEnd();
         });
     });
+
     $("#anotherRound").on("click", function(){
         window.location.reload();
     });
 
-    let buttonColors = document.getElementsByClassName("selectors");
-    let spots = document.getElementsByClassName("selectedColor");
-    let pickCount = 0;
-    $("#delete").on("click", function (){
+    clear.addEventListener("click", function (){
         if(guessSet.length > 0) {
             guessSet.pop();
             pickCount--;
             spots[pickCount].style.backgroundColor = "#232525"
         }
     });
-    for(let i = 0; i < buttonColors.length; i++){
-        buttonColors[i].disabled = true;
-    }
-    let guessSet = [];
+
     document.querySelectorAll(".selectors").forEach((btn) => btn.addEventListener("click", function() {
-        spots[pickCount].style.backgroundColor = this.id.toString();
-        pickCount++;
         if(guessSet.length < 4){
+            spots[pickCount].style.backgroundColor = this.id.toString();
+            pickCount++;
             guessSet.push(this.id.toString());
         }
     }));
 
     assert.addEventListener("click", function(){
-        assertGuess(count);
-        count++;
+        if(count < 10) {
+            assertGuess(count);
+            count++;
+        }
         guessSet = [];
         pickCount = 0;
         for(let i = 0; i < spots.length; i++){
@@ -190,21 +196,11 @@
 
     function reds(first, second, third, fourth, colorArr) {
         let rCRS = 0;
-        if (first === colorArr[0]) {
-            rCRS++;
-        }
-        if (second === colorArr[1]) {
-            rCRS++;
-        }
-        if (third === colorArr[2]) {
-            rCRS++;
-        }
-        if (fourth === colorArr[3]) {
-            rCRS++;
-        }
-        if(rCRS === 4){
-            won = true;
-        }
+        if (first === colorArr[0]) rCRS++;
+        if (second === colorArr[1]) rCRS++;
+        if (third === colorArr[2]) rCRS++;
+        if (fourth === colorArr[3]) rCRS++;
+        if(rCRS === 4) won = true;
         return rCRS + " Red";
     }
 
@@ -295,38 +291,31 @@
             $("#ten").text(reds(first, second, third, fourth, newKey));
             $("#tenWhite").text(whites(first, second, third, fourth, newKey));
         }
-        firstC[count].innerHTML = first;
-        firstC[count].style.color = guessSet[0];
-        secondC[count].innerHTML = second;
-        secondC[count].style.color = guessSet[1];
-        thirdC[count].innerHTML = third;
-        thirdC[count].style.color = guessSet[2];
-        fourthC[count].innerHTML = fourth;
-        fourthC[count].style.color = guessSet[3];
+        firstC[count].innerHTML = `<p class="tableColors" id="${first}"></p>`;
+        secondC[count].innerHTML = `<p class="tableColors" id="${second}"></p>`;
+        thirdC[count].innerHTML = `<p class="tableColors" id="${third}"></p>`;
+        fourthC[count].innerHTML = `<p class="tableColors" id="${fourth}"></p>`;
         if(won){
             gameWon();
+            firstC[count].innerHTML = `<p class="tableColors winningGlow" id="${first}"></p>`;
+            secondC[count].innerHTML = `<p class="tableColors winningGlow" id="${second}"></p>`;
+            thirdC[count].innerHTML = `<p class="tableColors winningGlow" id="${third}"></p>`;
+            fourthC[count].innerHTML = `<p class="tableColors winningGlow" id="${fourth}"></p>`;
         }
     }
-
-    let user;
-    let leaderBoardHTML = document.getElementById("fullLeaderBoard");
     function gameWon(){
-        clearInterval(intervalID);
+        gameEnd();
+        let winningSequenceArr = Array.from($(".winningSequence"));
         timer.style.display = "block";
         timer.innerHTML = `Solved in ${time} seconds`;
         $("#leaderBoardModal").fadeIn(200);
-        let winningSequenceArr = Array.from($(".winningSequence"));
         $("#solvedMoves").text(count + 1);
         for(let i = 0; i < winningSequenceArr.length; i++){
             winningSequenceArr[i].innerHTML = `<p class="leaderBoardButtonsDisplay" id="${sequence[i]}"></p>`;
         }
         $("#gameMode").text(mode);
-        for(let i = 0; i < buttonColors.length; i++){
-            buttonColors[i].disabled = true;
-        }
         $("#post").on("click", function (){
             user = generateUser($("#name").val(), mode, time, count, sequence);
-            console.log(user);
             $("#leaderBoardModal").fadeOut(200);
             addScore(user).then( () => {
                 fetchLeaderBoardData();
@@ -337,6 +326,9 @@
         const leaderBoard = $("#fullLeaderBoard");
         leaderBoard.css("display", "flex");
         leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p><button id="closeLeaderBoard">X</button>`;
+        $("#closeLeaderBoard").on("click", function () {
+            $("#fullLeaderBoard").fadeOut(300);
+        });
         fetchLeaderBoardData();
     });
     function fetchLeaderBoardData() {

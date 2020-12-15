@@ -18,6 +18,9 @@ body {
     color: #797b84;
     max-width: 90vw;
 }
+#help{
+    background-color: #0c1417;
+}
 #removeHelp{
     color: #14BDEB;
     width: 20%;
@@ -27,11 +30,56 @@ body {
 .shadow{
     text-shadow: 2px 2px black;
 }
+
+.responses{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33%;
+    min-width: 275px;
+}
+
 .guesses{
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     color: #797b84;
+    width: 100%;
 }
+.matrixDivContainer{
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+.matrixItem{
+    display: flex;
+    width: 56%;
+    justify-content: space-between;
+}
+.yourColor{
+    width: 23%;
+    height: 100%;
+}
+.tableColors{
+    margin: 0 auto;
+    width: 90%;
+    height: 60%;
+    border-radius: 10px;
+}
+.matrixOutput{
+    align-self: flex-end;
+    width: 25%;
+}
+.matrixNumber{
+    width: 10%;
+    align-self: flex-start;
+}
+.winningGlow{
+    box-shadow: 0px 0px 17px 4px #fdfdfd;
+}
+
 .easyOptions{
     margin-bottom: 0;
 }
@@ -42,7 +90,6 @@ p{
     margin: 10px 0;
 }
 #newGame{
-    border-radius: 25%;
     margin-top: 0;
     margin-bottom: .5em;
 }
@@ -51,11 +98,6 @@ p{
     font-size: 3em;
     color: #0e82a1;
     margin: .25em auto;
-}
-.responses{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 a{
     text-decoration: none;
@@ -70,12 +112,12 @@ h3{
 }
 button{
     color: #FFFAFB;
-    background-color: #4d473d;
-    border-radius: 25%;
+    background-color: #243746;
+    border-radius: 8px;
     transition-duration: .5s;
 }
 button:hover{
-    background-color: #2c2626;
+    background-color: #211e1e;
     color: #14BDEB;
     cursor: pointer;
 }
@@ -93,7 +135,7 @@ input:focus::placeholder{
     color: transparent;
 }
 .notes{
-    opacity: 0.5;
+    opacity: 0.4;
     resize: none;
     background-color: #202020;
     border: #080708;
@@ -101,6 +143,10 @@ input:focus::placeholder{
     color: #FFFAFB;
     padding: 2em;
     max-width: 90vw;
+    outline: none;
+}
+.notes:focus{
+    opacity: .6;
 }
 .inputs{
     padding: 0.3em;
@@ -276,6 +322,24 @@ input:focus::placeholder{
     display: flex;
     flex-direction: column;
 }
+#answerLocation{
+    margin-bottom: 10px;
+    height: 33px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#key{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+}
+#key>span{
+    width: 23%;
+    height: 100%;
+    border-radius: 10px;
+}
 #leaderBoardModal{
     display: none;
     background-color: #0c1417;
@@ -347,4 +411,14 @@ input:focus::placeholder{
     width: 90%;
     justify-content: space-between;
     align-items: center;
+}
+@media screen and (min-width: 945px){
+    .tableColors{
+        height: 90%;
+    }
+}
+@media screen and (min-width: 1400px){
+    .tableColors{
+        width: 80%;
+    }
 }
