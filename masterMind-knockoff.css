@@ -26,9 +26,14 @@ body::-webkit-scrollbar-track{
     display: none;
     color: #797b84;
     max-width: 90vw;
+    margin: auto;
 }
 #help{
     background-color: #0c1417;
+    margin-bottom: 7px;
+}
+#increaseDiff{
+    margin-top: 7px;
 }
 #removeHelp{
     color: #14BDEB;
@@ -94,9 +99,6 @@ body::-webkit-scrollbar-track{
 }
 p{
     margin: .5em 0;
-}
-.colorDescription{
-    margin: 10px 0;
 }
 #newGame{
     margin-top: 0;
