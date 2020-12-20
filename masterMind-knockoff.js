@@ -163,9 +163,6 @@
         for(let i = 0; i < spots.length; i++){
             spots[i].style.backgroundColor = "#16242c";
         }
-        if(!hardMode){
-            $("#increaseDiff").css("color", "#620113")
-        }
         if(expert){
             for(let i = 0; i < 4; i++){
                 let expertKey1 = ~~(Math.random() * expertKey.length -1) + 1;
@@ -222,17 +219,17 @@
     });
 
     function reds(first, second, third, fourth, colorArr) {
-        let rCRS = 0;
-        if (first === colorArr[0]) rCRS++;
-        if (second === colorArr[1]) rCRS++;
-        if (third === colorArr[2]) rCRS++;
-        if (fourth === colorArr[3]) rCRS++;
-        if(rCRS === 4) won = true;
-        return rCRS + " Red";
+        let red = 0;
+        if (first === colorArr[0]) red++;
+        if (second === colorArr[1]) red++;
+        if (third === colorArr[2]) red++;
+        if (fourth === colorArr[3]) red++;
+        if(red === 4) won = true;
+        return red + " Red";
     }
 
     function whites(first, second, third, fourth, colorArr) {
-        let rCWS = 0;
+        let white = 0;
         let firstIsRed = false;
         let secondIsRed = false;
         let thirdIsRed = false;
@@ -254,22 +251,22 @@
             fourthIsRed = true;
         }
         if (colorArr.indexOf(first) !== -1 && !firstIsRed) {
-            rCWS++;
+            white++;
             colorArr = colorArr.join(" ").replace(first, "").split(" ");
         }
         if (colorArr.indexOf(second) !== -1 && !secondIsRed) {
-            rCWS++;
+            white++;
             colorArr = colorArr.join(" ").replace(second, "").split(" ");
         }
         if (colorArr.indexOf(third) !== -1 && !thirdIsRed) {
-            rCWS++;
+            white++;
             colorArr = colorArr.join(" ").replace(third, "").split(" ");
         }
         if (colorArr.indexOf(fourth) !== -1 && !fourthIsRed) {
-            rCWS++;
+            white++;
             colorArr = colorArr.join(" ").replace(fourth, "").split(" ");
         }
-        return rCWS + " White";
+        return white + " White";
     }
 
     function assertGuess(){
