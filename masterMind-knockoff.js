@@ -173,12 +173,12 @@
             }
         } else if (hard) {
             for(let i = 0; i < 4; i++){
-                let hardKey1 = Math.floor(Math.random() * hardColorKey.length - 1) + 1;
+                let hardKey1 = ~~(Math.random() * hardColorKey.length - 1) + 1;
                 sequence.push(hardColorKey[hardKey1]);
             }
         } else {
             for(let i = 0; i < 4; i++){
-                let key1 = Math.floor(Math.random() * colorKey.length - 1) + 1;
+                let key1 = ~~(Math.random() * colorKey.length - 1) + 1;
                 sequence.push(colorKey[key1]);
             }
         }
@@ -358,6 +358,7 @@
     });
     function fetchLeaderBoardData() {
         fetch(postURL).then(r => r.json()).then(d => {
+            console.log(d);
             d = d.sort((a, b) => (parseFloat(a.time.split(" ")[0])) - (parseFloat(b.time.split(" ")[0])) > 0 ? 1 : -1);
             leaderBoardHTML.innerHTML = `<div id="leaderBoardInfo"><p>21 Best Scores</p><button id="closeLeaderBoard">X</button></div>`;
 
