@@ -4,7 +4,7 @@
         "blue", "yellow", "darkorange", "green", "hotpink", "saddlebrown"
     ];
     const hardColorKey = [
-        ...colorKey, "olivedrab", "purple", "grey", "lime", "tan"
+        ...colorKey, "olivedrab", "purple", "dimgray", "lime", "tan"
     ];
     const expertKey = [
         ...hardColorKey, "cyan", "crimson", "aliceblue"
@@ -76,6 +76,11 @@
     let pickCount = 0;
     let count = 0;
     let time = 0;
+    const easyOptionsHTML = `<span class="blue">Blue</span>, <span class="brown">Brown</span>, <span class="yellow">Yellow</span>, <span class="orange">Orange</span>, <span class="green">Green</span>, <span class="pink">Pink</span>`;
+    const justHardHTML = `<span class="grey">Grey</span>, <span class="olive">Olive</span>, <span class="tan">Tan</span>, <span class="purple">Purple</span>, and <span class="lime">Lime</span>`;
+    const hardOptionsAddHTML = `<span class="grey">Grey</span>, <span class="olive">Olive</span>, <span class="tan">Tan</span>, <span class="purple">Purple</span>, <span class="lime">Lime</span>`;
+    const expertOptionsHTML = `<span class="cyan">Cyan</span>, <span class="crimson">Crimson</span> and <span class="aliceblue">AliceBlue</span>`;
+    let optionsList = document.getElementById("optionsList");
     let list = document.getElementById("otherColors");
     let startGame = document.getElementById("newGame");
     let hardMode = document.getElementById("increaseDiff");
@@ -127,6 +132,7 @@
         }
         hardMode.innerText = "Expert Mode";
         list.innerHTML = `<p>Expert Mode adds: <span class="cyan">Cyan</span>, <span class="crimson">Crimson</span> and <span class="aliceblue">AliceBlue</span></p>`;
+        optionsList.innerHTML = `<p id="list"><strong>Options:</strong> ${easyOptionsHTML}, ${justHardHTML}</p>`;
         hardMode.addEventListener("click", function (){
                 hard = false;
                 expert = true;
@@ -138,6 +144,7 @@
                 $("#isHardMode").text("Expert Mode Enabled");
                 hardMode.disabled = true;
                 list.style.display = "none";
+                optionsList.innerHTML = `<p id="list"><strong>Options:</strong> ${easyOptionsHTML}, ${hardOptionsAddHTML}, ${expertOptionsHTML}</p>`;
             })
 
     });
