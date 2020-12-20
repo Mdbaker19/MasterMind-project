@@ -1,6 +1,6 @@
 body {
     background-image: url("img/binary.jpg");
-    background-color: #101111;
+    background-color: #040404;
     background-size: cover;
     background-repeat: no-repeat;
     color: #d3d5d6;
@@ -9,6 +9,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+body::-webkit-scrollbar{
+    width: 5px;
+}
+body::-webkit-scrollbar-thumb{
+    background-color: #07194f;
+}
+body::-webkit-scrollbar-track{
+    background-color: #0c1417;
 }
 .howToPlay{
     opacity: .7;
@@ -28,7 +37,7 @@ body {
     font-size: 1em;
 }
 .shadow{
-    text-shadow: 2px 2px black;
+    text-shadow: -3px 3px black;
 }
 
 .responses{
@@ -164,48 +173,7 @@ input:focus::placeholder{
 #anotherRound{
     margin-bottom: 1em;
 }
-.red{
-    color: #ff2e00;
-}
-.white{
-    color: #fffaff;
-}
-.lime{
-    color: #78fc6a;
-}
-.tan{
-    color: #c7aa74;
-}
-.yellow{
-    color: #f3de2c;
-}
-.pink{
-    color: #e9738f;
-}
-.cyan{
-    color: #05c8cc;
-}
-.green{
-    color: #034c3c;
-}
-.brown{
-    color: #582b11;
-}
-.grey{
-    color: #808080;
-}
-.olive{
-    color: #808000;
-}
-.orange{
-    color: #fe7f2d;
-}
-.purple{
-    color: #7b1e7a;
-}
-.blue{
-    color: #3772ff;
-}
+
 #done, #submit{
     margin-top: 1em;
 }
@@ -241,34 +209,10 @@ input:focus::placeholder{
     justify-content: center;
     align-items: center;
 }
-#pick1{
+.selectedColor{
     width: 25%;
     height: 100%;
     border: 2px solid #101111;
-    border-left: none;
-    border-radius: 5px;
-    background-color: #0d151d;
-}
-#pick2{
-    width: 25%;
-    height: 100%;
-    border: 2px solid #101111;
-    border-left: none;
-    border-radius: 5px;
-    background-color: #0d151d;
-}
-#pick3{
-    width: 25%;
-    height: 100%;
-    border: 2px solid #101111;
-    border-left: none;
-    border-radius: 5px;
-    background-color: #0d151d;
-}
-#pick4{
-    width: 25%;
-    height: 100%;
-    border: 1px solid #101111;
     border-left: none;
     border-radius: 5px;
     background-color: #0d151d;
@@ -291,8 +235,8 @@ input:focus::placeholder{
 #yellow{
     background-color: #f3de2c;
 }
-#pink{
-    background-color: #e9738f;
+#hotpink{
+    background-color: hotpink;
 }
 #cyan{
     background-color: #05c8cc;
@@ -300,20 +244,79 @@ input:focus::placeholder{
 #green{
     background-color: #034c3c;
 }
-#brown{
+#saddlebrown{
     background-color: #582b11;
 }
 #grey{
     background-color: #808080;
 }
-#olive{
-    background-color: #808000;
+#olivedrab{
+    background-color: olivedrab;
 }
-#orange{
-    background-color: #fe7f2d;
+#darkorange{
+    background-color: #ff8c00;
 }
 #purple{
     background-color: #7b1e7a;
+}
+
+#crimson{
+    background-color: crimson;
+}
+#aliceblue{
+    background-color: aliceblue;
+}
+.crimson{
+    color: crimson;
+}
+.aliceblue{
+    color: aliceblue;
+}
+.expert{
+    display: none;
+}
+
+.red{
+    color: #ff2e00;
+}
+.white{
+    color: #fffaff;
+}
+.lime{
+    color: #78fc6a;
+}
+.tan{
+    color: #c7aa74;
+}
+.yellow{
+    color: #f3de2c;
+}
+.pink{
+    color: hotpink;
+}
+.cyan{
+    color: #05c8cc;
+}
+.green{
+    color: #034c3c;
+}
+.brown{
+    color: #582b11;
+}
+.grey{
+    color: #808080;
+}
+.olive{
+    color: olivedrab;
+}
+.orange{
+    color: #ff8c00;
+}
+.purple{
+    color: #7b1e7a;
+}
+.blue{
+    color: #3772ff;
 }
 #timer{
     display: none;

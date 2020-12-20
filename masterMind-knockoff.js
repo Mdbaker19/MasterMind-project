@@ -1,10 +1,13 @@
 (function () {
     "use strict";
     const colorKey = [
-        "blue", "yellow", "orange", "green", "pink", "brown"
+        "blue", "yellow", "darkorange", "green", "hotpink", "saddlebrown"
     ];
     const hardColorKey = [
-        ...colorKey, "olive", "purple", "grey", "lime", "cyan", "tan"
+        ...colorKey, "olivedrab", "purple", "grey", "lime", "tan"
+    ];
+    const expertKey = [
+        ...hardColorKey, "cyan", "crimson", "aliceblue"
     ];
 
     function gameEnd(){
@@ -24,7 +27,7 @@
     function generateUser(name, mode, time, moves, arr){
         let ran = ~~(Math.random() * 80000);
         return {
-            name: name || `RandomUser#${ran}`,
+            name: name ?? `RandomUser#${ran}`,
             mode,
             time: `${time} seconds`,
             moves,
@@ -45,29 +48,21 @@
             </div>`;
     }
 
-    function addScore(userObj){
-        fetch(postURL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userObj)
-        })
-            .then( r => r.json())
-            .then( d => {
-                return d.id;
-            })
-            .catch( err => console.error(err));
-    }
+    function addScore(userObj){fetch(postURL, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(userObj)}).then( r => r.json()).then( d => {return d.id;}).catch( err => console.error(err));}
+    function remove(id){fetch(`${postURL}/${id}`, {method: "Delete", headers: {"Content-Type": "application/json"}}).then(r => r.json()).then( () => console.log(`deleted id ${id}`)).catch(err => console.error(err));}
 
     function renderSolution(arr){
-        return `<div id="key"><span id="${arr[0]}"></span><span id="${arr[1]}"></span><span id="${arr[2]}"></span><span id="${arr[3]}"></span></div>`
+        return `<div id="key"><span id="${arr[0]}"></span><span id="${arr[1]}"></span><span id="${arr[2]}"></span><span id="${arr[3]}"></span></div>`;
     }
     function runTime() {
         time++;
     }
-
-    function remove(id){fetch(`${postURL}/${id}`, {method: "Delete", headers: {"Content-Type": "application/json"}}).then(r => r.json()).then( d => console.log(`deleted id ${id}`)).catch(err => console.error(err));}
+    function trimRecord(arr){
+        if(arr.length > 7){
+            arr.length = 7;
+        }
+        return arr;
+    }
 
     let intervalID;
     let user;
@@ -75,14 +70,17 @@
     let helpEnabled = false;
     let won = false;
     let hard = false;
+    let expert = false;
     let sequence = [];
     let guessSet = [];
     let pickCount = 0;
     let count = 0;
     let time = 0;
+    let list = document.getElementById("otherColors");
     let startGame = document.getElementById("newGame");
     let hardMode = document.getElementById("increaseDiff");
-    let hardButtons = document.getElementsByClassName("hard");
+    const hardButtons = document.getElementsByClassName("hard");
+    const expertButtons = document.getElementsByClassName("expert");
     let assert = document.getElementById("submit");
     let clear = document.getElementById("delete");
     let timer = document.getElementById("timer");
@@ -121,13 +119,27 @@
     hardMode.addEventListener("click", function () {
         hard = true;
         mode = "Hard";
-        hardMode.disabled = true;
         hardMode.style.color = "#14bdeb";
         hardMode.style.background = "#0d151d";
-        $("#isHardMode").text("Enabled");
+        $("#isHardMode").text("Hard Mode Enabled");
         for(let i = 0; i < hardButtons.length; i++){
             hardButtons[i].style.display = "inline-block";
         }
+        hardMode.innerText = "Expert Mode";
+        list.innerHTML = `<p>Expert Mode adds: <span class="cyan">Cyan</span>, <span class="crimson">Crimson</span> and <span class="aliceblue">AliceBlue</span></p>`;
+        hardMode.addEventListener("click", function (){
+                hard = false;
+                expert = true;
+                hardMode.style.color = "#d61717";
+                for(let i = 0; i < expertButtons.length; i++){
+                    expertButtons[i].style.display = "inline-block";
+                }
+                mode = "Expert";
+                $("#isHardMode").text("Expert Mode Enabled");
+                hardMode.disabled = true;
+                list.style.display = "none";
+            })
+
     });
 
     startGame.addEventListener("click", function () {
@@ -141,10 +153,18 @@
         for(let i = 0; i < buttonColors.length; i++){
             buttonColors[i].disabled = false;
         }
+        for(let i = 0; i < spots.length; i++){
+            spots[i].style.backgroundColor = "#16242c";
+        }
         if(!hardMode){
             $("#increaseDiff").css("color", "#620113")
         }
-        if (hard) {
+        if(expert){
+            for(let i = 0; i < 4; i++){
+                let expertKey1 = ~~(Math.random() * expertKey.length -1) + 1;
+                sequence.push(expertKey[expertKey1]);
+            }
+        } else if (hard) {
             for(let i = 0; i < 4; i++){
                 let hardKey1 = Math.floor(Math.random() * hardColorKey.length - 1) + 1;
                 sequence.push(hardColorKey[hardKey1]);
@@ -317,30 +337,30 @@
         $("#post").on("click", function (){
             user = generateUser($("#name").val(), mode, time, count, sequence);
             $("#leaderBoardModal").fadeOut(200);
-            addScore(user).then( () => {
-                fetchLeaderBoardData();
-            });
+            addScore(user);
         });
     }
     $("#viewLeaderBoard").on("click", function(){
+        fetchLeaderBoardData();
         const leaderBoard = $("#fullLeaderBoard");
         leaderBoard.css("display", "flex");
         leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p><button id="closeLeaderBoard">X</button>`;
         $("#closeLeaderBoard").on("click", function () {
             $("#fullLeaderBoard").fadeOut(300);
         });
-        fetchLeaderBoardData();
     });
     function fetchLeaderBoardData() {
         fetch(postURL).then(r => r.json()).then(d => {
             d = d.sort((a, b) => (parseFloat(a.time.split(" ")[0])) - (parseFloat(b.time.split(" ")[0])) > 0 ? 1 : -1);
-            leaderBoardHTML.innerHTML = `<div id="leaderBoardInfo"><p>15 Best Scores</p><button id="closeLeaderBoard">X</button></div>`;
+            leaderBoardHTML.innerHTML = `<div id="leaderBoardInfo"><p>21 Best Scores</p><button id="closeLeaderBoard">X</button></div>`;
 
-            const hardList = d.filter(d => d.mode === "Hard");
-            const normalList = d.filter(d => d.mode === "Normal");
-            for (let i = 0; i < 15; i++) {
+            const expertList = trimRecord(d.filter(d => d.mode === "Expert"));
+            const hardList = trimRecord(d.filter(d => d.mode === "Hard"));
+            const normalList = trimRecord(d.filter(d => d.mode === "Normal"));
+
+            for (let i = 0; i < 21; i++) {
                 if (d[i] !== undefined) {
-                    leaderBoardHTML.insertAdjacentHTML("beforeend", render([...hardList, ...normalList][i]));
+                    leaderBoardHTML.insertAdjacentHTML("beforeend", render([...expertList, ...hardList, ...normalList][i]));
                 }
             }
             $("#closeLeaderBoard").on("click", function () {
