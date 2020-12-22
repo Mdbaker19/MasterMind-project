@@ -100,6 +100,7 @@
     let redResponses = document.getElementsByClassName("outputRed");
     let whiteResponses = document.getElementsByClassName("outputWhite");
     let buttonColors = document.getElementsByClassName("selectors");
+    let buttonOptionsArr = Array.from(buttonColors);
     for(let i = 0; i < redResponses.length; i++){
         redResponses[i].style.color = "red";
     }
@@ -198,13 +199,17 @@
         }
     });
 
-    document.querySelectorAll(".selectors").forEach((btn) => btn.addEventListener("click", function() {
+    buttonOptionsArr.forEach(btn => btn.addEventListener("click", function() {
         if(guessSet.length < 4){
             spots[pickCount].style.backgroundColor = this.id.toString();
             pickCount++;
             guessSet.push(this.id.toString());
         }
     }));
+
+    // buttonOptionsArr.forEach(btn => btn.addEventListener("dblclick", function (){
+    //     this.style.backgroundColor = "#232525";
+    // }));
 
     assert.addEventListener("click", function(){
         if(count < 10) {
@@ -345,13 +350,13 @@
         });
     }
     $("#viewLeaderBoard").on("click", function(){
-        fetchLeaderBoardData();
         const leaderBoard = $("#fullLeaderBoard");
         leaderBoard.css("display", "flex");
         leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p><button id="closeLeaderBoard">X</button>`;
-        $("#closeLeaderBoard").on("click", function () {
-            $("#fullLeaderBoard").fadeOut(300);
-        });
+        fetchLeaderBoardData();
+    });
+    $("body").on("click", "#closeLeaderBoard", function () {
+        $("#fullLeaderBoard").fadeOut(300);
     });
     function fetchLeaderBoardData() {
         fetch(postURL).then(r => r.json()).then(d => {
@@ -364,13 +369,10 @@
             const normalList = trimRecord(d.filter(d => d.mode === "Normal"));
 
             for (let i = 0; i < 21; i++) {
-                if (d[i] !== undefined) {
+                if (typeof d[i] === "object") {
                     leaderBoardHTML.insertAdjacentHTML("beforeend", render([...expertList, ...hardList, ...normalList][i]));
                 }
             }
-            $("#closeLeaderBoard").on("click", function () {
-                $("#fullLeaderBoard").fadeOut(300);
-            });
         });
     }
 
