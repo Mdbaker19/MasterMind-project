@@ -134,6 +134,9 @@ button:hover{
     color: #14BDEB;
     cursor: pointer;
 }
+#notIn{
+    margin: 5px 0 15px;
+}
 #link{
     color: aliceblue;
 }
@@ -198,7 +201,7 @@ input:focus::placeholder{
     align-items: center;
 }
 .selectors{
-    margin: 1em .25em;
+    margin: .65em .2em;
     width: 35px;
     height: 35px;
     border: 5px outset #353a3a;
@@ -228,28 +231,28 @@ input:focus::placeholder{
     display: flex;
 }
 #blue{
-    background-color: #3772ff;
+    background-color: blue;
 }
 #lime{
-    background-color: #78fc6a;
+    background-color: lime;
 }
 #tan{
-    background-color: #c7aa74;
+    background-color: tan;
 }
 #yellow{
-    background-color: #f3de2c;
+    background-color: yellow;
 }
 #hotpink{
     background-color: hotpink;
 }
 #cyan{
-    background-color: #05c8cc;
+    background-color: cyan;
 }
 #green{
-    background-color: #034c3c;
+    background-color: green;
 }
 #saddlebrown{
-    background-color: #582b11;
+    background-color: saddlebrown;
 }
 #dimgray{
     background-color: dimgray;
@@ -258,10 +261,10 @@ input:focus::placeholder{
     background-color: olivedrab;
 }
 #darkorange{
-    background-color: #ff8c00;
+    background-color: darkorange;
 }
 #purple{
-    background-color: #7b1e7a;
+    background-color: purple;
 }
 
 #crimson{
@@ -320,7 +323,7 @@ input:focus::placeholder{
     color: #7b1e7a;
 }
 .blue{
-    color: #3772ff;
+    color: blue;
 }
 #timer{
     display: none;
@@ -392,7 +395,7 @@ input:focus::placeholder{
     width: 100%;
 }
 .bottomButtons{
-    width: 50%;
+    width: 100%;
     margin: 5px auto;
     background-color: #111212;
 }

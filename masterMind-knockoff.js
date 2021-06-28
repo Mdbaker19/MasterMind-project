@@ -27,7 +27,7 @@
     function generateUser(name, mode, time, moves, arr){
         let ran = ~~(Math.random() * 80000);
         return {
-            name: name ?? `RandomUser#${ran}`,
+            name: name || `RandomUser#${ran}`,
             mode,
             time: `${time} seconds`,
             moves,
@@ -100,7 +100,6 @@
     let redResponses = document.getElementsByClassName("outputRed");
     let whiteResponses = document.getElementsByClassName("outputWhite");
     let buttonColors = document.getElementsByClassName("selectors");
-    let buttonOptionsArr = Array.from(buttonColors);
     for(let i = 0; i < redResponses.length; i++){
         redResponses[i].style.color = "red";
     }
@@ -199,17 +198,14 @@
         }
     });
 
+    let buttonOptionsArr = $(".selectors").toArray();
     buttonOptionsArr.forEach(btn => btn.addEventListener("click", function() {
-        if(guessSet.length < 4){
+        if (guessSet.length < 4) {
             spots[pickCount].style.backgroundColor = this.id.toString();
             pickCount++;
             guessSet.push(this.id.toString());
         }
     }));
-
-    // buttonOptionsArr.forEach(btn => btn.addEventListener("dblclick", function (){
-    //     this.style.backgroundColor = "#232525";
-    // }));
 
     assert.addEventListener("click", function(){
         if(count < 10) {
@@ -345,6 +341,7 @@
         $("#gameMode").text(mode);
         $("#post").on("click", function (){
             user = generateUser($("#name").val(), mode, time, count, sequence);
+            console.log(user);
             $("#leaderBoardModal").fadeOut(200);
             addScore(user);
         });
