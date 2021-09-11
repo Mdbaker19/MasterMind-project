@@ -1,5 +1,5 @@
-(function () {
-    "use strict";
+(() => {
+
     const colorKey = [
         "blue", "yellow", "darkorange", "green", "hotpink", "saddlebrown"
     ];
@@ -10,59 +10,7 @@
         ...hardColorKey, "cyan", "crimson", "aliceblue"
     ];
 
-    function gameEnd(){
-        clearInterval(intervalID);
-        for(let i = 0; i < buttonColors.length; i++){
-            buttonColors[i].disabled = true;
-        }
-        for(let i = 0; i < spots.length; i++) {
-            spots[i].style.backgroundColor = '#000000';
-        }
-        assert.disabled = true;
-        clear.disabled = true;
-        pickCount = 500;
-    }
-
-    const postURL = "https://juniper-satisfying-cold.glitch.me/scores";
-    function generateUser(name, mode, time, moves, arr){
-        let ran = ~~(Math.random() * 80000);
-        return {
-            name: name || `RandomUser#${ran}`,
-            mode,
-            time: `${time} seconds`,
-            moves,
-            sequence: arr
-        }
-    }
-
-    function render(userObj){
-        return `<div id="gameUser">
-                <h4>${userObj.name}</h4>
-                <p>Game mode: ${userObj.mode}, solved in ${userObj.time} and ${userObj.moves} moves</p>
-                <div id="leaderBoardSequence">
-                    <p class="userSequence" id="${userObj.sequence[0]}"></p>
-                    <p class="userSequence" id="${userObj.sequence[1]}"></p>
-                    <p class="userSequence" id="${userObj.sequence[2]}"></p>
-                    <p class="userSequence" id="${userObj.sequence[3]}"></p>
-                </div>
-            </div>`;
-    }
-
-    function addScore(userObj){fetch(postURL, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(userObj)}).then( r => r.json()).then( d => {return d.id;}).catch( err => console.error(err));}
-    function remove(id){fetch(`${postURL}/${id}`, {method: "Delete", headers: {"Content-Type": "application/json"}}).then(r => r.json()).then( () => console.log(`deleted id ${id}`)).catch(err => console.error(err));}
-
-    function renderSolution(arr){
-        return `<div id="key"><span id="${arr[0]}"></span><span id="${arr[1]}"></span><span id="${arr[2]}"></span><span id="${arr[3]}"></span></div>`;
-    }
-    function runTime() {
-        time++;
-    }
-    function trimRecord(arr){
-        if(arr.length > 7){
-            arr.length = 7;
-        }
-        return arr;
-    }
+    let len = colorKey.length;
 
     let intervalID;
     let user;
@@ -82,6 +30,9 @@
     const expertOptionsHTML = `<span class="cyan">Cyan</span>, <span class="crimson">Crimson</span> and <span class="aliceblue">AliceBlue</span>`;
     let optionsList = document.getElementById("optionsList");
     let list = document.getElementById("otherColors");
+
+
+    let remove = document.getElementById("remove");
     let startGame = document.getElementById("newGame");
     let hardMode = document.getElementById("increaseDiff");
     const hardButtons = document.getElementsByClassName("hard");
@@ -95,7 +46,7 @@
     let fourthC = document.getElementsByClassName("c4");
     let spots = document.getElementsByClassName("selectedColor");
     let leaderBoardHTML = document.getElementById("fullLeaderBoard");
-    assert.disabled = true;
+    let buttonOptionsArr = [...document.querySelectorAll(".selectors")];
 
     let redResponses = document.getElementsByClassName("outputRed");
     let whiteResponses = document.getElementsByClassName("outputWhite");
@@ -106,8 +57,61 @@
     for(let i = 0; i < whiteResponses.length; i++){
         whiteResponses[i].style.color = "white";
     }
-    for(let i = 0; i < buttonColors.length; i++){
-        buttonColors[i].disabled = true;
+
+    alterGameButtons(true);
+
+    function alterGameButtons(status){
+        for(let i = 0; i < buttonColors.length; i++){
+            buttonColors[i].disabled = status;
+        }
+        assert.disabled = status;
+        clear.disabled = status;
+        remove.disabled = status;
+    }
+
+    function gameEnd(){
+        clearInterval(intervalID);
+        alterGameButtons(true);
+        resetColorChoices("#000000");
+        pickCount = 500;
+    }
+
+    const postURL = "https://mm-score-db-default-rtdb.firebaseio.com/leaderboard.json";
+    function generateUser(name, mode, time, moves, sequence){
+        let ran = ~~(Math.random() * 80000);
+        return {
+            name: name || `RandomUser#${ran}`,
+            mode,
+            time: `${time} seconds`,
+            moves,
+            sequence
+        }
+    }
+
+    function render(userObj){
+        return `<div id="gameUser">
+                <h4>${userObj.name}</h4>
+                <p>Game mode: ${userObj.mode}, solved in ${userObj.time} and ${userObj.moves} moves</p>
+                <div id="leaderBoardSequence">
+                    <p class="userSequence" id="${userObj.sequence[0]}"></p>
+                    <p class="userSequence" id="${userObj.sequence[1]}"></p>
+                    <p class="userSequence" id="${userObj.sequence[2]}"></p>
+                    <p class="userSequence" id="${userObj.sequence[3]}"></p>
+                </div>
+            </div>`;
+    }
+
+    function renderSolution(arr){
+        return `<div id="key"><span id="${arr[0]}"></span><span id="${arr[1]}"></span><span id="${arr[2]}"></span><span id="${arr[3]}"></span></div>`;
+    }
+    function runTime() {
+        time++;
+    }
+    function trimRecord(arr){
+        if(arr.length > 7){
+            arr.length = 7;
+        }
+        return arr;
     }
 
     $("#help").on("click", function (){
@@ -126,7 +130,7 @@
         mode = "Hard";
         hardMode.style.color = "#14bdeb";
         hardMode.style.background = "#0d151d";
-        $("#isHardMode").text("Hard Mode Enabled");
+        $("#difficultyLevel").text("Hard Mode Enabled");
         for(let i = 0; i < hardButtons.length; i++){
             hardButtons[i].style.display = "inline-block";
         }
@@ -141,7 +145,7 @@
                     expertButtons[i].style.display = "inline-block";
                 }
                 mode = "Expert";
-                $("#isHardMode").text("Expert Mode Enabled");
+                $("#difficultyLevel").text("Expert Mode Enabled");
                 hardMode.disabled = true;
                 list.style.display = "none";
                 optionsList.innerHTML = `<p id="list"><strong>Options:</strong> ${easyOptionsHTML}, ${hardOptionsAddHTML}, ${expertOptionsHTML}</p>`;
@@ -152,33 +156,14 @@
     startGame.addEventListener("click", function () {
         time = 0;
         intervalID = setInterval(runTime, 1000);
-        assert.disabled = false;
         startGame.disabled = true;
         hardMode.disabled = true;
         startGame.style.color = "#14bdeb";
         startGame.style.background = "#0d151d";
-        for(let i = 0; i < buttonColors.length; i++){
-            buttonColors[i].disabled = false;
-        }
-        for(let i = 0; i < spots.length; i++){
-            spots[i].style.backgroundColor = "#16242c";
-        }
-        if(expert){
-            for(let i = 0; i < 4; i++){
-                let expertKey1 = ~~(Math.random() * expertKey.length -1) + 1;
-                sequence.push(expertKey[expertKey1]);
-            }
-        } else if (hard) {
-            for(let i = 0; i < 4; i++){
-                let hardKey1 = ~~(Math.random() * hardColorKey.length - 1) + 1;
-                sequence.push(hardColorKey[hardKey1]);
-            }
-        } else {
-            for(let i = 0; i < 4; i++){
-                let key1 = ~~(Math.random() * colorKey.length - 1) + 1;
-                sequence.push(colorKey[key1]);
-            }
-        }
+        resetColorChoices("#16242c");
+        alterGameButtons(false);
+
+        sequence = genSequence(expert, hard);
         $("#start").text("Sequence Generated");
         $("#done").on("click", function () {
             $("#answerLocation").html(renderSolution(sequence));
@@ -186,11 +171,23 @@
         });
     });
 
-    $("#anotherRound").on("click", function(){
+    function genSequence(isExpert, isHard) {
+        let out = [];
+        if(isExpert || isHard) {
+            len = isExpert ? expertKey.length : hardColorKey.length;
+        }
+        for(let i = 0; i < 4; i++) {
+            let ran = ~~(Math.random() * len);
+            out.push(expertKey[ran]);
+        }
+        return out;
+    }
+
+    $("#anotherRound").on("click", () => {
         window.location.reload();
     });
 
-    clear.addEventListener("click", function (){
+    clear.addEventListener("click",  () => {
         if(guessSet.length > 0) {
             guessSet.pop();
             pickCount--;
@@ -198,26 +195,55 @@
         }
     });
 
-    let buttonOptionsArr = $(".selectors").toArray();
+    let removeClickCount = 0;
+    remove.addEventListener("click", () => {
+        removeClickCount++;
+        removeClickCount %= 4;
+        if (removeClickCount === 1) {
+            remove.innerText = "Done";
+        } else if (removeClickCount === 2) {
+            remove.innerText = "Restore";
+        } else {
+            remove.innerText = "Remove";
+        }
+        if(removeClickCount === 3) {
+            // using the global len that is redefined on start up of game to determine
+            // how many buttons to then re-show
+            for(let i = 0; i < len; i++) {
+                buttonOptionsArr[i].style.display = "inline-block";
+            }
+            removeClickCount++; // to have it cycle back as this is a restore of buttons, no user interaction
+        }
+    });
+
+
     buttonOptionsArr.forEach(btn => btn.addEventListener("click", function() {
-        if (guessSet.length < 4) {
-            spots[pickCount].style.backgroundColor = this.id.toString();
-            pickCount++;
-            guessSet.push(this.id.toString());
+        if(removeClickCount % 2 === 0) {
+            if (guessSet.length < 4) {
+                spots[pickCount].style.backgroundColor = this.id.toString();
+                pickCount++;
+                guessSet.push(this.id.toString());
+            }
+        } else if(removeClickCount === 1){
+            this.style.display = "none";
         }
     }));
 
     assert.addEventListener("click", function(){
+        resetColorChoices("#16242c");
         if(count < 10) {
-            assertGuess(count);
+            assertGuess();
             count++;
         }
         guessSet = [];
         pickCount = 0;
-        for(let i = 0; i < spots.length; i++){
-            spots[i].style.backgroundColor = "#0d151d";
-        }
     });
+
+    function resetColorChoices(colorStr){
+        for(let i = 0; i < spots.length; i++){
+            spots[i].style.backgroundColor = colorStr;
+        }
+    }
 
     function reds(first, second, third, fourth, colorArr) {
         let red = 0;
@@ -225,97 +251,52 @@
         if (second === colorArr[1]) red++;
         if (third === colorArr[2]) red++;
         if (fourth === colorArr[3]) red++;
-        if(red === 4) won = true;
+        won = red === 4;
         return red + " Red";
     }
 
     function whites(first, second, third, fourth, colorArr) {
         let white = 0;
-        let firstIsRed = false;
-        let secondIsRed = false;
-        let thirdIsRed = false;
-        let fourthIsRed = false;
-        if (first === colorArr[0]) {
-            colorArr = colorArr.join(" ").replace(first, "").split(" ");
-            firstIsRed = true;
-        }
-        if (second === colorArr[1]) {
-            colorArr = colorArr.join(" ").replace(second, "").split(" ");
-            secondIsRed = true;
-        }
-        if (third === colorArr[2]) {
-            colorArr = colorArr.join(" ").replace(third, "").split(" ");
-            thirdIsRed = true;
-        }
-        if (fourth === colorArr[3]) {
-            colorArr = colorArr.join(" ").replace(fourth, "").split(" ");
-            fourthIsRed = true;
-        }
-        if (colorArr.indexOf(first) !== -1 && !firstIsRed) {
-            white++;
+        let firstIsRed = first === colorArr[0];
+        let secondIsRed = second === colorArr[1];
+        let thirdIsRed = third === colorArr[2];
+        let fourthIsRed = fourth === colorArr[3];
+
+        if (firstIsRed) {
             colorArr = colorArr.join(" ").replace(first, "").split(" ");
         }
-        if (colorArr.indexOf(second) !== -1 && !secondIsRed) {
-            white++;
+        if (secondIsRed) {
             colorArr = colorArr.join(" ").replace(second, "").split(" ");
         }
-        if (colorArr.indexOf(third) !== -1 && !thirdIsRed) {
-            white++;
+        if (thirdIsRed) {
             colorArr = colorArr.join(" ").replace(third, "").split(" ");
         }
-        if (colorArr.indexOf(fourth) !== -1 && !fourthIsRed) {
-            white++;
+        if (fourthIsRed) {
             colorArr = colorArr.join(" ").replace(fourth, "").split(" ");
         }
+        [white, colorArr] = whiteCounter(first, firstIsRed, colorArr, white);
+        [white, colorArr] = whiteCounter(second, secondIsRed, colorArr, white);
+        [white, colorArr] = whiteCounter(third, thirdIsRed, colorArr, white);
+        [white, colorArr] = whiteCounter(fourth, fourthIsRed, colorArr, white);
+
         return white + " White";
+    }
+
+    function whiteCounter(colorGuess, wasRed, sequence, count) {
+        if (sequence.indexOf(colorGuess) !== -1 && !wasRed) {
+            count++;
+            sequence = sequence.join(" ").replace(colorGuess, "").split(" ");
+        }
+        return [count, sequence];
     }
 
     function assertGuess(){
         let newKey = sequence;
-        let first = guessSet[0];
-        let second = guessSet[1];
-        let third = guessSet[2];
-        let fourth = guessSet[3];
-        if (count === 0) {
-            $("#one").text(reds(first, second, third, fourth, newKey));
-            $("#oneWhite").text(whites(first, second, third, fourth, newKey));
+        let [first, second, third, fourth] = guessSet;
 
-        } else if (count === 1) {
-            $("#two").text(reds(first, second, third, fourth, newKey));
-            $("#twoWhite").text(whites(first, second, third, fourth, newKey));
+        $(`#${count}r`).text(reds(first, second, third, fourth, newKey));
+        $(`#${count}w`).text(whites(first, second, third, fourth, newKey));
 
-        } else if (count === 2) {
-            $("#three").text(reds(first, second, third, fourth, newKey));
-            $("#threeWhite").text(whites(first, second, third, fourth, newKey));
-
-        } else if (count === 3) {
-            $("#four").text(reds(first, second, third, fourth, newKey));
-            $("#fourWhite").text(whites(first, second, third, fourth, newKey));
-
-        } else if (count === 4) {
-            $("#five").text(reds(first, second, third, fourth, newKey));
-            $("#fiveWhite").text(whites(first, second, third, fourth, newKey));
-
-        } else if (count === 5) {
-            $("#six").text(reds(first, second, third, fourth, newKey));
-            $("#sixWhite").text(whites(first, second, third, fourth, newKey));
-
-        } else if (count === 6) {
-            $("#seven").text(reds(first, second, third, fourth, newKey));
-            $("#sevenWhite").text(whites(first, second, third, fourth, newKey));
-
-        } else if (count === 7) {
-            $("#eight").text(reds(first, second, third, fourth, newKey));
-            $("#eightWhite").text(whites(first, second, third, fourth, newKey));
-
-        } else if (count === 8) {
-            $("#nine").text(reds(first, second, third, fourth, newKey));
-            $("#nineWhite").text(whites(first, second, third, fourth, newKey));
-
-        } else if (count === 9) {
-            $("#ten").text(reds(first, second, third, fourth, newKey));
-            $("#tenWhite").text(whites(first, second, third, fourth, newKey));
-        }
         firstC[count].innerHTML = `<p class="tableColors" id="${first}"></p>`;
         secondC[count].innerHTML = `<p class="tableColors" id="${second}"></p>`;
         thirdC[count].innerHTML = `<p class="tableColors" id="${third}"></p>`;
@@ -339,37 +320,62 @@
             winningSequenceArr[i].innerHTML = `<p class="leaderBoardButtonsDisplay" id="${sequence[i]}"></p>`;
         }
         $("#gameMode").text(mode);
-        $("#post").on("click", function (){
+        $("#post").on("click", () => {
             user = generateUser($("#name").val(), mode, time, count, sequence);
-            console.log(user);
             $("#leaderBoardModal").fadeOut(200);
             addScore(user);
         });
     }
-    $("#viewLeaderBoard").on("click", function(){
+
+    $("#viewLeaderBoard").on("click", () => {
         const leaderBoard = $("#fullLeaderBoard");
         leaderBoard.css("display", "flex");
         leaderBoardHTML.innerHTML = `<p id="loadingScreen">Loading LeaderBoard</p><button id="closeLeaderBoard">X</button>`;
         fetchLeaderBoardData();
     });
-    $("body").on("click", "#closeLeaderBoard", function () {
+
+    $("body").on("click", "#closeLeaderBoard",  () => {
         $("#fullLeaderBoard").fadeOut(300);
     });
+
     function fetchLeaderBoardData() {
         fetch(postURL).then(r => r.json()).then(d => {
-            console.log(d);
+            d = dataToArr(d);
             d = d.sort((a, b) => (parseFloat(a.time.split(" ")[0])) - (parseFloat(b.time.split(" ")[0])) > 0 ? 1 : -1);
-            leaderBoardHTML.innerHTML = `<div id="leaderBoardInfo"><p>21 Best Scores</p><button id="closeLeaderBoard">X</button></div>`;
+            leaderBoardHTML.innerHTML = `<div id="leaderBoardInfo"><p>Top Scores</p><button id="closeLeaderBoard">X</button></div>`;
 
             const expertList = trimRecord(d.filter(d => d.mode === "Expert"));
             const hardList = trimRecord(d.filter(d => d.mode === "Hard"));
             const normalList = trimRecord(d.filter(d => d.mode === "Normal"));
 
-            for (let i = 0; i < 21; i++) {
+            const joinedRecords = [...expertList, ...hardList, ...normalList];
+            for (let i = 0; i < joinedRecords.length; i++) {
                 if (typeof d[i] === "object") {
-                    leaderBoardHTML.insertAdjacentHTML("beforeend", render([...expertList, ...hardList, ...normalList][i]));
+                    leaderBoardHTML.insertAdjacentHTML("beforeend", render(joinedRecords[i]));
                 }
             }
+        });
+    }
+
+    function dataToArr(fireBaseObjSet) {
+        let out = [];
+        for(const [key, value] of Object.entries(fireBaseObjSet)) {
+            out.push(value);
+        }
+        return out;
+    }
+
+    function addScore(record) {
+        fetch(postURL, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(record)
+        }).then(res => {
+            res.json().then(d => {
+                console.log(d);
+            })
         });
     }
 

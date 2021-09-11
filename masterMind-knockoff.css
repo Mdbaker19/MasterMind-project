@@ -144,7 +144,7 @@ button:hover{
     margin-top: -0.5em;
     margin-bottom: 0;
 }
-#isHardMode{
+#difficultyLevel{
     margin-bottom: -0.5em;
 }
 input:focus::placeholder{

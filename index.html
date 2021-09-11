@@ -27,11 +27,12 @@
                 Input your four guesses into the provided area by clicking the buttons and assert them against the hidden code
                 You will be given a response after each guess.
                 'x' amount of red means you have guessed that many correct colors that are also in the correct spot as they are in the hidden sequence (no particular order)
-                'x' amount of white means you have guessed that many correct colors but they are in the wrong spot compared to the hidden sequence (no particular order)
-                you have 10 guesses to determine the hidden code!
+                'x' amount of white means you have guessed that many correct colors but they are in the wrong spot compared to the hidden sequence (no particular order).
+                Choices can be removed temporarily as you narrow down the solution and brought back with the restore button
+                You have 10 guesses to determine the hidden code!
             </p>
         </div>
-        <button id="increaseDiff">Hard Mode</button><p id="isHardMode"></p><br>
+        <button id="increaseDiff">Hard Mode</button><p id="difficultyLevel"></p><br>
         <p class="otherColors" id="otherColors">Hard Mode Adds: <span class="grey">Grey</span>, <span class="olive">Olive</span>, <span class="tan">Tan</span>, <span class="purple">Purple</span> and <span class="lime">Lime</span></p><br>
         <button id="newGame">Start Game</button>
         <p class="easyOptions" id="optionsList"><span><strong>Options: </strong></span><span class="blue">Blue</span>, <span class="brown">Brown</span>, <span class="yellow">Yellow</span>, <span class="orange">Orange</span>, <span class="green">Green</span> and <span class="pink">Pink</span></p><br>
@@ -83,6 +84,7 @@ In Sequence:
             <div class="buttonSection">
                 <button id="delete" class="options">Clear</button>
                 <button type="submit" id="submit" class="options">Assert</button>
+                <button type="submit" id="remove" class="options">Remove</button>
             </div>
         </div>
 
@@ -98,70 +100,70 @@ In Sequence:
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="one" class="outputRed">/Red </span>  <span id="oneWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="0r" class="outputRed">/Red </span>  <span id="0w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#2</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="two" class="outputRed">/Red </span>  <span id="twoWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="1r" class="outputRed">/Red </span>  <span id="1w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#3</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="three" class="outputRed">/Red </span>  <span id="threeWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="2r" class="outputRed">/Red </span>  <span id="2w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#4</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="four" class="outputRed">/Red </span>  <span id="fourWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="3r" class="outputRed">/Red </span>  <span id="3w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#5</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="five" class="outputRed">/Red </span>  <span id="fiveWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="4r" class="outputRed">/Red </span>  <span id="4w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#6</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="six" class="outputRed">/Red </span>  <span id="sixWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="5r" class="outputRed">/Red </span>  <span id="5w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#7</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="seven" class="outputRed">/Red </span>  <span id="sevenWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="6r" class="outputRed">/Red </span>  <span id="6w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#8</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="eight" class="outputRed">/Red </span>  <span id="eightWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="7r" class="outputRed">/Red </span>  <span id="7w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#9</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="nine" class="outputRed">/Red </span>  <span id="nineWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="8r" class="outputRed">/Red </span>  <span id="8w" class="outputWhite">/White</span></p>
             </div>
             <div class="matrixDivContainer">
                 <p class="matrixNumber">#10</p>
                 <div class="matrixItem">
                     <span class="yourColor c1">[]</span><span class="yourColor c2">[]</span><span class="yourColor c3">[]</span><span class="yourColor c4">[]</span>
                 </div>
-                <p class="matrixOutput"><span id="ten" class="outputRed">/Red </span>  <span id="tenWhite" class="outputWhite">/White</span></p>
+                <p class="matrixOutput"><span id="9r" class="outputRed">/Red </span>  <span id="9w" class="outputWhite">/White</span></p>
             </div>
         </div>
         <button id="done"><span class="red">Show</span>  <span class="white">Solution</span></button>
