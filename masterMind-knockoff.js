@@ -125,15 +125,19 @@
         }
     });
 
+    function showExtraButtons(difficultyArr) {
+        for(let i = 0; i < difficultyArr.length; i++){
+            difficultyArr[i].style.display = "inline-block";
+        }
+    }
+
     hardMode.addEventListener("click", function () {
         hard = true;
         mode = "Hard";
         hardMode.style.color = "#14bdeb";
         hardMode.style.background = "#0d151d";
         $("#difficultyLevel").text("Hard Mode Enabled");
-        for(let i = 0; i < hardButtons.length; i++){
-            hardButtons[i].style.display = "inline-block";
-        }
+        showExtraButtons(hardButtons);
         hardMode.innerText = "Expert Mode";
         list.innerHTML = `<p>Expert Mode adds: <span class="cyan">Cyan</span>, <span class="crimson">Crimson</span> and <span class="aliceblue">AliceBlue</span></p>`;
         optionsList.innerHTML = `<p id="list"><strong>Options:</strong> ${easyOptionsHTML}, ${justHardHTML}</p>`;
@@ -141,9 +145,7 @@
                 hard = false;
                 expert = true;
                 hardMode.style.color = "#d61717";
-                for(let i = 0; i < expertButtons.length; i++){
-                    expertButtons[i].style.display = "inline-block";
-                }
+                showExtraButtons(expertButtons);
                 mode = "Expert";
                 $("#difficultyLevel").text("Expert Mode Enabled");
                 hardMode.disabled = true;
@@ -368,13 +370,11 @@
     function addScore(record) {
         fetch(postURL, {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(record)
         }).then(res => {
-            res.json().then(d => {
-                console.log(d);
+            res.json().then(() => {
+                console.log("Thanks for playing");
             })
         });
     }
