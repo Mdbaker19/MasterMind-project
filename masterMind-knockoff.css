@@ -339,6 +339,10 @@ input:focus::placeholder{
     align-items: center;
     justify-content: center;
 }
+#remove-cont {
+    display: none;
+    text-align: center;
+}
 #key{
     display: flex;
     justify-content: space-around;

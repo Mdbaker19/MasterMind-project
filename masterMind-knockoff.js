@@ -198,12 +198,16 @@
     });
 
     let removeClickCount = 0;
+    let removeCont = document.getElementById("remove-cont");
     remove.addEventListener("click", () => {
         removeClickCount++;
+        console.log(removeClickCount);
         removeClickCount %= 4;
+        removeCont.style.display = "none";
         if (removeClickCount === 1) {
             remove.innerText = "Done";
         } else if (removeClickCount === 2) {
+            removeCont.style.display = "inline-block";
             remove.innerText = "Restore";
         } else {
             remove.innerText = "Remove";
@@ -218,15 +222,24 @@
         }
     });
 
+    let removeContClickCount = 0;
+    removeCont.addEventListener("click", () => {
+        removeContClickCount++;
+        let isFirstClick = removeContClickCount % 2 !== 0;
+        removeCont.innerText = isFirstClick ? "Done" : "Remove";
+    });
+
 
     buttonOptionsArr.forEach(btn => btn.addEventListener("click", function() {
-        if(removeClickCount % 2 === 0) {
+        if(removeClickCount === 2 && removeContClickCount % 2 !== 0) {
+            this.style.display = "none";
+        } else if(removeClickCount % 2 === 0) {
             if (guessSet.length < 4) {
                 spots[pickCount].style.backgroundColor = this.id.toString();
                 pickCount++;
                 guessSet.push(this.id.toString());
             }
-        } else if(removeClickCount === 1){
+        } else if(removeClickCount === 1) {
             this.style.display = "none";
         }
     }));
