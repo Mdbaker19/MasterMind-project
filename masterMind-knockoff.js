@@ -201,7 +201,6 @@
     let removeCont = document.getElementById("remove-cont");
     remove.addEventListener("click", () => {
         removeClickCount++;
-        console.log(removeClickCount);
         removeClickCount %= 4;
         removeCont.style.display = "none";
         if (removeClickCount === 1) {
